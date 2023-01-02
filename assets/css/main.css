@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&display=swap');
+
+
+.feature {
+    fill: #777;
+}
+
+.mesh {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+  stroke-linejoin: round;
+}
+
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  color: blueviolet;
+  margin: 3rem;
+  font-family: 'Open Sans', sans-serif;
+}
