@@ -1,8 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&display=swap');
 
+*, :before, :after {
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: 1.785rem !important;
+}
 
 .feature {
-    fill: #777;
+    fill: #aaa;
 }
 
 .mesh {
@@ -19,3 +31,33 @@
   margin: 3rem;
   font-family: 'Open Sans', sans-serif;
 }
+
+#meta-info-container {
+  min-height: 50vh;
+  width: 50vw;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 1.5rem 1rem;
+  display: grid;
+  grid-template-columns: repeat(2fr auto);
+}
+
+#meta-info-wrapper {
+   background-color: rgb(242, 242, 242);
+   border-radius: 10px;
+   padding: .5rem .875rem;
+}
+
+#btn-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 1.5rem 1rem;
+}
+
+#btn-container button {
+  display: block;
+  margin: 1rem 0;
+}
+

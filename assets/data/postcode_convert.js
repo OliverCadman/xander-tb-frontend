@@ -38,6 +38,7 @@ let postcodeObj = {
     FK: 'Falkirk',
     FY: 'Blackpool',
     G: 'Glasgow',
+    GL: 'Gloucester',
     GU: 'Guildford',
     HA: 'Harrow',
     HD: 'Huddersfield',
