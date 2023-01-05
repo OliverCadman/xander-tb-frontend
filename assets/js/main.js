@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const BASE_API_URL = "http://127.0.0.1:8000/api/orders";
+  const fd = null;
+  const fdTB2000 = null;
+  const fdTB4000 = null;
 
   const keys = [5, 10, 30, 50, 100, 200, 350, 500];
-
-  
-    let color = d3.scaleThreshold().domain(keys).range(d3.schemeBlues[9]);
+  let color = d3.scaleThreshold().domain(keys).range(d3.schemeBlues[9]);
 
   var width = window.innerWidth / 2;
-  var height = window.innerHeight - 60;
+  var height = window.innerHeight;
 
   var projection = d3
     .geoAlbers()
@@ -17,11 +17,24 @@ document.addEventListener("DOMContentLoaded", () => {
     .scale(650 * 5)
     .translate([width / 2, height / 2]);
 
-  var svg = d3
-    .select("body")
+  var svg = d3.select("#sales-map").attr("width", width).attr("height", height);
+
+  // Bar Chart - Global Variables
+  // set the dimensions and margins of the graph
+  var margin = { top: 30, right: 30, bottom: 70, left: 60 },
+    width = 600 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+  // append the svg object to the body of the page
+  var svgBarChart = d3
+    .select("#sales-chart")
     .append("svg")
-    .attr("width", width)
-    .attr("height", height);
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  
+  let bottomAxis, leftAxis;
 
   // Legend
 
@@ -29,9 +42,10 @@ document.addEventListener("DOMContentLoaded", () => {
     .append("text")
     .attr("x", 40)
     .attr("y", 75)
-    .attr("font-family", "Raleway, sans-serif")
+    .attr("font-family", "Jost, sans-serif")
     .attr("font-size", "1.375rem")
-    .text("Toothbrush Sales by Postcode");
+    .attr("font-weight", "300")
+    .text("Sales Per Postcode");
 
   svg
     .selectAll(".legend-dots")
@@ -71,7 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
     var path = d3.geoPath().projection(projection);
 
     d3.json("../assets/data/uk-postcode-area.json", function (error, uk) {
-      console.log('hello')
       const topo = topojson.feature(
         uk,
         uk.objects["uk-postcode-area"]
@@ -98,19 +111,17 @@ document.addEventListener("DOMContentLoaded", () => {
         obj[item.id] = item.properties.total_tb_sales;
       });
 
-      console.log(svg)
+      svg
+        .append("path")
+        .datum(
+          topojson.mesh(uk, uk.objects["uk-postcode-area"], function (a, b) {
+            return a !== b;
+          })
+        )
+        .attr("class", "mesh")
+        .attr("d", path);
 
-       svg
-         .append("path")
-         .datum(
-           topojson.mesh(uk, uk.objects["uk-postcode-area"], function (a, b) {
-             return a !== b;
-           })
-         )
-         .attr("class", "mesh")
-         .attr("d", path);
-      
-      svg.selectAll('.postcode_area').remove()
+      svg.selectAll(".postcode_area").remove();
 
       svg
         .selectAll(".postcode_area")
@@ -119,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .append("path")
         .attr("class", "postcode_area")
         .attr("d", path)
+        .style("stroke", "#aaa")
         .style("fill", function (d) {
           //Get data value
           var sales_count = d.properties.total_tb_sales;
@@ -130,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         })
         .on("mouseover", mouseOver)
-        .on("mouseleave", mouseLeave)
+        .on("mouseleave", mouseLeave);
     });
 
     let toolTip = d3
@@ -140,12 +152,16 @@ document.addEventListener("DOMContentLoaded", () => {
       .style("opacity", 0);
 
     let mouseOver = function (d) {
-      console.log('hi')
-      d3.selectAll(".Country").transition().duration(200).style("opacity", 0.1);
+      d3.selectAll(".Country").transition().duration(200).style("opacity", 1);
       d3.select(this)
+        .style("stroke", "black")
         .transition()
         .duration(200)
-        .style("opacity", 1)
+        .style("opacity", function (d) {
+          if (!_.isEmpty(d.properties)) {
+            return 0.75;
+          }
+        })
         .style("lineWidth", 5)
         .style("cursor", "pointer");
 
@@ -182,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let mouseLeave = function (d) {
       d3.selectAll(".Country").transition().duration(200).style("opacity", 0.8);
-      d3.select(this).transition().duration(200).style("stroke", "transparent");
+      d3.select(this).transition().duration(200).style("stroke", "#aaa");
 
       toolTip.style("opacity", 0);
     };
@@ -191,10 +207,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const displayMetaData = (
     deliveryDeltas,
     customerAges,
-    header,
     overallTBSales = null
   ) => {
-
     let tbSalesObj, tb2000Sales, tb4000Sales, totalTBSales;
 
     if (overallTBSales) {
@@ -203,20 +217,10 @@ document.addEventListener("DOMContentLoaded", () => {
       tb4000Sales = tbSalesObj.max_toothbrush_4000;
       totalTBSales = tb2000Sales + tb4000Sales;
 
-      $("#tb_2000").text(
-        `Toothbrush 2000: ${tbSalesObj.max_toothbrush_2000}`
-      );
-      $("#tb_4000").text(
-        `Toothbrush 4000: ${tbSalesObj.max_toothbrush_4000}`
-      );
+      $("#tb_2000").text(`Toothbrush 2000: ${tbSalesObj.max_toothbrush_2000}`);
+      $("#tb_4000").text(`Toothbrush 4000: ${tbSalesObj.max_toothbrush_4000}`);
       $("#total_sales").text(`Total Toothbrush Sales: ${totalTBSales}`);
     }
-
-    console.group('MetaData')
-    console.log(deliveryDeltas);
-    console.log(customerAges);
-    console.log(overallTBSales);
-    console.groupEnd()
 
     const deltaAvg = formatDelta(deliveryDeltas.avg_delivery_delta);
     const deltaMax = formatDelta(deliveryDeltas.max_delivery_delta);
@@ -233,34 +237,54 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#avg-customer-age").text(`Average Age of Customer: ${avgCustomerAge}`);
     $("#max-customer-age").text(`Oldest Customer: ${maxCustomerAge}`);
     $("#min-customer-age").text(`Youngest Customer: ${minCustomerAge}`);
-
-    $("#header").text(header);
   };
 
-  async function getData(endpoint) {
-    const url = `${BASE_API_URL}${endpoint}`;
-    try {
-      const resp = await fetch(url);
-      const data = await resp.json();
-      return data;
-    } catch (err) {
-      console.log(`Error: ${err}`);
+  const displayTBData = (tb2000Data, tb4000Data) => {
+    // TB 2000 Section
+
+    const tb2000CustomerAge = tb2000Data.avg_customer_age;
+    const tb2000TotalSales = tb2000Data.total_sales;
+    const tb2000DeliveryDelta = formatDelta(tb2000Data.avg_delivery_delta);
+
+    const tb4000CustomerAge = tb4000Data.avg_customer_age;
+    const tb4000TotalSales = tb4000Data.total_sales;
+    const tb4000DeliveryDelta = formatDelta(tb4000Data.avg_delivery_delta);
+
+    $("#tb-2000-sales-result").text(tb2000TotalSales);
+    $("#tb-2000-avg-cust-age").text(tb2000CustomerAge);
+    $("#tb-2000-avg-delivery-time").text(tb2000DeliveryDelta);
+
+    $("#tb-4000-sales-result").text(tb4000TotalSales);
+    $("#tb-4000-avg-cust-age").text(tb4000CustomerAge);
+    $("#tb-4000-avg-delivery-time").text(tb4000DeliveryDelta);
+
+    if (tb2000CustomerAge < tb4000CustomerAge) {
+      $("#tb-2000-lead-1").text(resultPrompts.customer_age.younger.lead);
+      $("#tb-4000-lead-1").text(resultPrompts.customer_age.older.lead);
+
+      $("#tb-2000-strategy-1").text(resultPrompts.customer_age.younger.p1);
+      $("#tb-2000-strategy-2").text(resultPrompts.customer_age.younger.p1);
+
+      $("#tb-4000-strategy-1").text(resultPrompts.customer_age.older.p1);
+      $("#tb-4000-strategy-2").text(resultPrompts.customer_age.older.p1);
+    } else {
+      $("#tb-2000-lead-1").text(resultPrompts.customer_age.older.lead);
+      $("#tb-4000-lead-1").text(resultPrompts.customer_age.younger.lead);
+
+      $("#tb-2000-strategy-1").text(resultPrompts.customer_age.older.p1);
+      $("#tb-2000-strategy-2").text(resultPrompts.customer_age.older.p2);
+
+      $("#tb-4000-strategy-1").text(resultPrompts.customer_age.younger.p1);
+      $("#tb-4000-strategy-2").text(resultPrompts.customer_age.younger.p2);
     }
-  }
 
-  const init = async () => {
-    // Make the various API requests
-    const fullDataByPostcode = await getData(
-      "/full_orders/get_full_data_by_postcode"
-    );
-    const totalSalesPerTB = await getData("/count_tb_type");
-
-    const deliveryDeltas = await getData("/full_orders/get_delivery_deltas");
-
-    const customerAges = await getData("/full_orders/get_customer_ages");
-
-    displayMap(fullDataByPostcode);
-    displayMetaData(deliveryDeltas, customerAges, 'All Toothbrushes',totalSalesPerTB);
+    if (tb2000TotalSales < tb4000TotalSales) {
+      $("#tb-2000-lead-2").text(resultPrompts.sales.lower);
+      $("#tb-4000-lead-2").text(resultPrompts.sales.higher);
+    } else {
+      $("#tb-2000-lead-2").text(resultPrompts.sales.higher);
+      $("#tb-4000-lead-2").text(resultPrompts.sales.lower);
+    }
   };
 
   const formatDelta = (delta) => {
@@ -305,62 +329,220 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const displaySalesByAgeChart = (data) => {
+
+    const convertedObj = convertSalesByAgeObj(data)
+
+    const ageKeys = Object.keys(convertedObj);
+    console.log(convertedObj);
+    // X axis
+    var x = d3.scaleBand().range([0, width]).domain(ageKeys).padding(0.2);
+    
+    // Add Y axis
+    var y = d3
+      .scaleLinear()
+      .domain([0, d3.max(ageKeys, (d) => convertedObj[d])])
+      .range([height, 0]);
+    leftAxis = d3.axisLeft(y);
+
+    svgBarChart
+      .append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .style("font-family", "Jost, sans-serif")
+      .call(d3.axisBottom(x));
+
+    
+    svgBarChart.append("g").style("font-family", "Jost, sans-serif").call(d3.axisLeft(y));
+
+    // Bars
+    svgBarChart
+      .selectAll("mybar")
+      .data(ageKeys)
+      .enter()
+      .append("rect")
+      .attr("x", (d) => x(d))
+      .attr("y", (d) => y(convertedObj[d]))
+      .attr("width", x.bandwidth())
+      .transition()
+      .ease(d3.easeElastic)
+      .duration(500)
+      .delay((d, i) => i * 50)
+      .attr("height", (d) => height - y(convertedObj[d]))
+      .attr("fill", "#69b3a2");
+  };
+
+  function updateBar(data) {
+
+    svgBarChart.selectAll('rect').remove();
+    svgBarChart.selectAll('g').remove();
+
+    const convertedObj = convertSalesByAgeObj(data);
+
+     const ageKeys = Object.keys(convertedObj);
+     var x = d3.scaleBand().range([0, width]).domain(ageKeys).padding(0.2);
+
+     // Add Y axis
+     var y = d3
+       .scaleLinear()
+       .domain([0, d3.max(ageKeys, (d) => convertedObj[d])])
+       .range([height, 0]);
+
+    svgBarChart
+      .append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .style("font-family", "Jost, sans-serif")
+      .call(d3.axisBottom(x));
+
+    svgBarChart.append("g").style("font-family", "Jost, sans-serif").call(d3.axisLeft(y));
+
+    svgBarChart
+      .selectAll("mybar")
+      .data(ageKeys)
+      .enter()
+      .append("rect")
+      .attr("x", (d) => x(d))
+      .attr("y", (d) => y(convertedObj[d]))
+      .attr("width", x.bandwidth())
+      .transition()
+      .ease(d3.easeElastic)
+      .duration(500)
+      .delay((d, i) => i * 50)
+      .attr("height", (d) => height - y(convertedObj[d]))
+      .attr("fill", "#69b3a2");
+  }
+
   // Buttons to switch data sets
   d3.selectAll(".btn").on("click", async function () {
-
-    let deliveryDeltas, customerAges, fullData, header;
+    let deliveryDeltas, customerAges, fullData, header, tbSalesByAge;
 
     const btnID = d3.select(this).attr("id");
     if (btnID === "toggle_toothbrush_2000") {
-      fullData = await getData(
-        "/full_orders/get_full_data_by_postcode?toothbrush_type=toothbrush_2000"
-      );
+      if (!fdTB2000) {
+        fullData = await getData(
+          "/full_orders/get_full_data_by_postcode?toothbrush_type=toothbrush_2000"
+        );
+      } else {
+        fullData = fdTB2000;
+        console.log("TB2000 DATA EXISTS:", fullData);
+      }
 
       deliveryDeltas = await getData(
         "/full_orders/get_delivery_deltas?toothbrush_type=toothbrush_2000"
-      )
-
-      customerAges = await getData(
-        "/full_orders/get_customer_ages?toothbrush_type=toothbrush_2000"
-      )
-
-      header = "Toothbrush 2000"
-
-    } else if (btnID === "toggle_toothbrush_4000") {
-      fullData = await getData(
-        "/full_orders/get_full_data_by_postcode?toothbrush_type=toothbrush_4000"
       );
 
       customerAges = await getData(
+        "/full_orders/get_customer_ages?toothbrush_type=toothbrush_2000"
+      );
+
+      tbSalesByAge = await getData(
+        "/full_orders/get_tb_sales_by_age?toothbrush_type=toothbrush_2000"
+      );
+    } else if (btnID === "toggle_toothbrush_4000") {
+      if (!fdTB4000) {
+        fullData = await getData(
+          "/full_orders/get_full_data_by_postcode?toothbrush_type=toothbrush_4000"
+        );
+      } else {
+        fullData = fdTB4000;
+        console.log("TB4000 DATA EXISTS:", fullData);
+      }
+
+      customerAges = await getData(
         "/full_orders/get_customer_ages?toothbrush_type=toothbrush_4000"
-      )
+      );
 
       deliveryDeltas = await getData(
         "/full_orders/get_delivery_deltas?toothbrush_type=toothbrush_4000"
       );
 
-      header = "Toothbrush 4000"
-
+      tbSalesByAge = await getData(
+        "/full_orders/get_tb_sales_by_age?toothbrush_type=toothbrush_4000"
+      );
     } else {
-      fullData = await getData(
-        "/full_orders/get_full_data_by_postcode"
+      if (!fd) {
+        fullData = await getData("/full_orders/get_full_data_by_postcode");
+      } else {
+        fullData = fd;
+        console.log("FULL DATA EXISTS:", fullData);
+      }
+
+      deliveryDeltas = await getData("/full_orders/get_delivery_deltas");
+
+      customerAges = await getData("/full_orders/get_customer_ages");
+
+      tbSalesByAge = await getData(
+        "/full_orders/get_tb_sales_by_age"
       )
 
-      deliveryDeltas = await getData(
-        "/full_orders/get_delivery_deltas"
-      )
-
-      customerAges = await getData(
-        "/full_orders/get_customer_ages"
-      )
-
-      header = "All Toothbrushes"
+      header = "Sales per Age Group";
     }
 
-     displayMap(fullData);
-     displayMetaData(deliveryDeltas, customerAges, header);
+    displayMap(fullData);
+    displayMetaData(deliveryDeltas, customerAges, header);
+    updateBar(tbSalesByAge);
   });
 
+  const init = async () => {
+    // Make the various API requests
+    const fullDataByPostcode = await getData(
+      "/full_orders/get_full_data_by_postcode"
+    );
+    const totalSalesPerTB = await getData("/count_tb_type");
+
+    const deliveryDeltas = await getData("/full_orders/get_delivery_deltas");
+
+    const customerAges = await getData("/full_orders/get_customer_ages");
+
+    const tb2000FullData = await getData(
+      "/full_orders/get_full_data_by_tb_type?toothbrush_type=toothbrush_2000"
+    );
+
+    const tb4000FullData = await getData(
+      "/full_orders/get_full_data_by_tb_type?toothbrush_type=toothbrush_4000"
+    );
+
+    const tbSalesByAge = await getData("/full_orders/get_tb_sales_by_age");
+
+    displayMap(fullDataByPostcode);
+    displayMetaData(deliveryDeltas, customerAges, totalSalesPerTB);
+    displayTBData(tb2000FullData, tb4000FullData);
+
+    displaySalesByAgeChart(tbSalesByAge);
+  };
 
   init();
 });
+
+// ---------------------- Utility Functions
+
+const convertPostCodeAreaToPostcode = (data) => {
+  for (i in postcodeObj) {
+    for (j in data) {
+      if (data[j].delivery_postcode__postcode_area === i) {
+        data[j].delivery_postcode__postcode_area = postcodeObj[i];
+      }
+    }
+  }
+ return data;
+};
+
+const convertSalesByAgeObj = (data) => {
+  let convertedObj = {};
+
+  let salesCount = 0;
+
+  for (let i = 0; i < data.length; i++) {
+    const customerAge = data[i].customer_age;
+    if (customerAge > 0) {
+      salesCount += data[i].total_sales;
+
+      if (customerAge % 10 === 0) {
+        convertedObj[customerAge] = salesCount;
+        salesCount = 0;
+        continue;
+      }
+    }
+  }
+  return convertedObj;
+};
+

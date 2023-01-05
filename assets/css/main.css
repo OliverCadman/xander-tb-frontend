@@ -1,4 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Jost:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+:root {
+  --aeroblue: #C2E7D9;
+  --lightblue : #A6CFD5;
+  --darkerblue : #26408B;
+  --midnightblue : #0F084B;
+  --xiketic: #0D0221;
+
+  --font-primary: 'Jost', sans-serif;
+}
 
 *, :before, :after {
   margin: 0;
@@ -11,6 +21,23 @@ body, html {
 
 h1, h2, h3, h4, h5, h6 {
   font-size: 1.785rem !important;
+  font-family: var(--font-primary);
+}
+
+#tb-overall--meta,
+#tb-2000--meta {
+  margin-bottom: 5rem;
+}
+
+
+#tb-overall--meta {
+  position: relative;
+  height: 100%;
+  position: relative;
+}
+
+#map-container {
+  height: 100%;
 }
 
 .feature {
@@ -33,9 +60,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #meta-info-container {
-  min-height: 50vh;
-  width: 50vw;
-  position: absolute;
+  position: relative;
   right: 0;
   bottom: 0;
   margin: 1.5rem 1rem;
@@ -60,4 +85,59 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
   margin: 1rem 0;
 }
+
+#chart-header {
+  font-weight: 300;
+}
+
+
+/* Toothbrush 2000 Section */
+
+#tb-2000--meta,
+#tb-4000--meta {
+  position: relative;
+  height: 70vh;
+}
+
+#tb-2000-header--container {
+  position: relative;
+
+}
+
+.tb-type-header--wrapper {
+   margin-right: 2.275rem;
+}
+
+#tb-2000-header--wrapper div p {
+  font-family: var(--font-primary);
+  font-size: 1.275rem !important;
+}
+
+.tb-type-header {
+  font-family: var(--font-primary);
+  font-weight: 300;
+  font-size: 4rem !important;
+  font-style: italic;
+  color: var(--lightblue);
+}
+
+.tb-img {
+  transform: rotate(45deg);
+  float: left;
+  width: 398px;
+  height: 142px;
+  -webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 40px 20px #222);
+  position: absolute;
+  left: 0;
+  bottom: -125px;
+}
+
+.border--1 {
+  border-right: 4px solid #efefef;
+  
+}
+
+
+
 
