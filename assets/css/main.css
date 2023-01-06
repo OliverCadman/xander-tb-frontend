@@ -33,7 +33,7 @@ h1, h2, h3, h4, h5, h6 {
 #tb-overall--meta {
   position: relative;
   height: 100%;
-  position: relative;
+  background-color: #f9f9f9;
 }
 
 #map-container {
@@ -106,19 +106,56 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   bottom: 0;
   left: 0;
-  margin: 1.5rem 1rem;
 }
 
-#btn-container button {
-  display: block;
+#btn-wrapper {
+  padding: 1.5rem 1rem;
+  margin: 2rem 0;
+  background-color:rgb(242, 242, 242);
+  border-radius: 10px;
+}
+
+
+
+.filter-btn {
+  font-family: 'Raleway', sans-serif !important;
+  background-color:#0F084B !important;
+  color: #fafafa !important;
+  transition: all 0.3s ease;
+  display: block !important;
   margin: 1rem 0;
+}
+
+
+.filter-btn:hover {
+  background-color:#1b1170 !important;
+}
+
+.active {
+  background-color: #e6e602 !important;
+  color:#0D0221 !important;
+}
+
+.active:hover {
+  background-color: #fff700 !important;
+}
+
+#null-postcode-btn {
+  visibility: hidden;
+  margin-left: 1rem;
+  font-family: var(--font-primary);
+}
+
+.null-postcode-list-container {
+  height: 30vh;
+  overflow: auto;
 }
 
 /* Bar Chart */
 
 .bar:hover{
   fill: #86bfb2;
-
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 

@@ -29,9 +29,16 @@
                     <div class="col-12 col-md-6" id="map-container">
                         <svg id="sales-map"></svg>
                          <div id="btn-container">
-                             <button class="btn btn-success" id="toggle_toothbrush_2000">Toothbrush 2000</button>
-                             <button class="btn btn-success" id="toggle_toothbrush_4000">Toothbrush 4000</button>
-                             <button class="btn btn-success" id="toggle_all_toothbrushes">All Toothbrushes</button>
+                                <button class="btn btn-danger" id="null-postcode-btn" data-bs-toggle="modal" data-bs-target="#null-postcode-modal"></button>
+                            <div id="btn-wrapper">
+                                 <h6>Filter by Toothbrush</h6>
+                                 <button class="btn filter-btn all_toothbrushes" id="toggle_all_toothbrushes">All
+                                     Toothbrushes</button>
+                                 <button class="btn filter-btn toothbrush_2000" id="toggle_toothbrush_2000">Toothbrush
+                                     2000</button>
+                                 <button class="btn filter-btn toothbrush_4000" id="toggle_toothbrush_4000">Toothbrush
+                                     4000</button>
+                            </div>
                          </div>
                     </div>
                     <div class="col-12 col-md-6 d-flex flex-column justify-content-around">
@@ -99,7 +106,30 @@
             </div>
         </section>
     </main>
-    
+    <aside>
+        <div class="modal fade" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1"
+            id="null-postcode-modal">
+             <div class="modal-dialog modal-dialog-centered">
+                 <div class="modal-dialog">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <h5 class="modal-title" id="null-postcode-header"></h5>
+                             <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                 aria-label="Close"></button>
+                         </div>
+                         <div class="modal-body null-postcode-list-container">
+                             <ul id="null-postcode-list">
+                                
+                             </ul>
+                         </div>
+                         <div class="modal-footer">
+                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+        </div>
+    </aside>
     <script src="./assets/js/get_data.js"></script>
     <script src="./assets/data/result_prompts.js"></script>
     <script src="./assets/js/main.js">

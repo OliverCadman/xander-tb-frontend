@@ -4,6 +4,20 @@ document.addEventListener("DOMContentLoaded", () => {
     $('#header').text(content);
   }
 
+  const toggleActiveBtnStyles = (toothbrushType) => {
+    const buttons = document.querySelectorAll(".btn");
+
+    buttons.forEach((button) => {
+      if (button.classList.contains("active")) {
+        button.classList.remove("active");
+      }
+
+      if (button.classList.contains(toothbrushType)) {
+        button.classList.add("active");
+      }
+    });
+  };
+
 
   const fd = null;
   const fdTB2000 = null;
@@ -86,8 +100,15 @@ document.addEventListener("DOMContentLoaded", () => {
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle")
     .attr("font-family", "Open Sans, sans-serif");
+  
 
-  const displayMap = (fullDataByPostcode) => {
+  // Default filter button style
+  $('#toggle_all_toothbrushes').addClass('active');
+
+
+  const displayMap = (fullDataByPostcode, toothbrushType=null) => {
+    let nullPostcodes = [];
+
     var path = d3.geoPath().projection(projection);
 
     d3.json("../assets/data/uk-postcode-area.json", function (error, uk) {
@@ -116,6 +137,33 @@ document.addEventListener("DOMContentLoaded", () => {
       _.each(topo, function (item) {
         obj[item.id] = item.properties.total_tb_sales;
       });
+
+      for (i in topo) {
+        if (topo[i].hasOwnProperty('properties')) {
+          if (_.isEmpty(topo[i].properties)) {
+            nullPostcodes.push(topo[i].id)
+          }
+        }
+     }
+
+     if (nullPostcodes) {
+
+        $('#null-postcode-btn')
+        .css('visibility', 'visible')
+        .text(`${nullPostcodes.length} unexplored UK districts!`)
+        
+        const nullPostcodeHTML = nullPostcodes.map((postcode) => {
+          return `<li>${postcodeObj[postcode]}</li>`
+        }).join('')
+        
+        $('#null-postcode-header').text(`${nullPostcodes.length} UK Districts`)
+        $('#null-postcode-list').html(nullPostcodeHTML)
+
+     }
+
+      svg.append('div').attr('x', 45).attr('y', window.innerHeight / 2).html(
+        `<p>hello</p>`
+      )
 
       svg
         .append("path")
@@ -173,8 +221,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (d.properties.hasOwnProperty("total_tb_sales")) {
         toolTip
           .style("opacity", 1)
-          .style("padding", ".75rem")
-          .html(
+          .style("padding", ".75rem");
+        
+        if (!toothbrushType || toothbrushType === "all_toothbrushes") {
+          toolTip.html(
             `
                 <h3>${postcodeObj[d.id]}</h3>
                 <dl>
@@ -187,11 +237,48 @@ document.addEventListener("DOMContentLoaded", () => {
                   <dt class='tooltip-header'>Average Customer Age</dt>
                   <dd class='tooltip-data'>${d.properties.avg_customer_age}</dd>
                   <dt class='tooltip-header'>Average Delivery Time</dt>
-                  <dd class='tooltip-data'>${formatDelta(d.properties.avg_delivery_delta)}</dd>
+                  <dd class='tooltip-data'>${formatDelta(
+                    d.properties.avg_delivery_delta
+                  )}</dd>
                 </dl>
               `
-          )
-          .transition()
+          );
+        } else if (toothbrushType === "toothbrush_2000") {
+          toolTip.html(
+            `
+                <h3>${postcodeObj[d.id]}</h3>
+                <dl>
+                  <dt class='tooltip-header'>Total Toothbrush 2000 Sales</dt>
+                  <dd class='tooltip-data'>${d.properties.tb_2000_sales}</dd>
+                  <dt class='tooltip-header'>Average Customer Age</dt>
+                  <dd class='tooltip-data'>${d.properties.avg_customer_age}</dd>
+                  <dt class='tooltip-header'>Average Delivery Time</dt>
+                  <dd class='tooltip-data'>${formatDelta(
+                    d.properties.avg_delivery_delta
+                  )}</dd>
+                </dl>
+              `
+          );
+        } else if (toothbrushType === "toothbrush_4000") {
+          toolTip.html(
+            `
+                <h3>${postcodeObj[d.id]}</h3>
+                <dl>
+                  <dt class='tooltip-header'>Total Toothbrush 4000 Sales</dt>
+                  <dd class='tooltip-data'>${d.properties.tb_4000_sales}</dd>
+                  <dt class='tooltip-header'>Average Customer Age</dt>
+                  <dd class='tooltip-data'>${d.properties.avg_customer_age}</dd>
+                  <dt class='tooltip-header'>Average Delivery Time</dt>
+                  <dd class='tooltip-data'>${formatDelta(
+                    d.properties.avg_delivery_delta
+                  )}</dd>
+                </dl>
+              `
+          );
+        }
+       
+
+          toolTip.transition()
           .style("left", d3.event.x + "px")
           .style("top", () => {
             const mousePosition = d3.mouse(this);
@@ -339,7 +426,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const displaySalesByAgeChart = (data) => {
-
     
     svgBarChart.selectAll("rect").remove();
     svgBarChart.selectAll("g").remove();
@@ -397,24 +483,27 @@ document.addEventListener("DOMContentLoaded", () => {
         .append("div")
         .attr("class", "tooltip-bar");
 
-
-
        function onMouseOverBar(d, i, m) {
          const xPos = d3.event.x
          const yPos = d3.event.y
          console.log(toolTipBar)
          toolTipBar
-         .html(`
+
+           .html(
+             `
             <dl>
               <dt class='tooltip-header'>Total Sales</dt>
               <dd class='tooltip-data'>${convertedObj[d]}</dd>
             </dl>
-         `)
+         `
+           )
+           .style("cursor", "pointer")
            .transition()
            .duration(200)
            .style("opacity", 1)
            .style("left", xPos + "px")
-           .style("top", yPos + "px")
+           .style("top", yPos + "px");
+          
 
        }
 
@@ -425,8 +514,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Buttons to switch data sets
-  d3.selectAll(".btn").on("click", async function () {
-    let deliveryDeltas, customerAges, fullData, header, tbSalesByAge;
+  d3.selectAll(".filter-btn").on("click", async function () {
+    let deliveryDeltas, customerAges, fullData, header, tbSalesByAge, toothbrushType;
 
     const btnID = d3.select(this).attr("id");
     if (btnID === "toggle_toothbrush_2000") {
@@ -451,7 +540,8 @@ document.addEventListener("DOMContentLoaded", () => {
         "/full_orders/get_tb_sales_by_age?toothbrush_type=toothbrush_2000"
       );
 
-      header = 'Toothbrush 2000'
+      header = 'Toothbrush 2000';
+      toothbrushType = 'toothbrush_2000'
     } else if (btnID === "toggle_toothbrush_4000") {
       if (!fdTB4000) {
         fullData = await getData(
@@ -475,6 +565,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       header = 'Toothbrush 4000';
+      toothbrushType = 'toothbrush_4000'
     } else {
       if (!fd) {
         fullData = await getData("/full_orders/get_full_data_by_postcode");
@@ -492,12 +583,14 @@ document.addEventListener("DOMContentLoaded", () => {
       )
 
       header = "All Toothbrushes";
+      toothbrushType = 'all_toothbrushes'
     }
 
-    displayMap(fullData);
+    displayMap(fullData, toothbrushType);
     displayMetaData(deliveryDeltas, customerAges, header);
     displaySalesByAgeChart(tbSalesByAge);
     displayHeader(header);
+    toggleActiveBtnStyles(toothbrushType);
   });
 
   const init = async () => {
