@@ -51,14 +51,24 @@ h1, h2, h3, h4, h5, h6 {
   stroke-linejoin: round;
 }
 
-.tooltip {
+.tooltip, .tooltip-bar{
   position: absolute;
   pointer-events: none;
   background-color: #111d3f;
   color: #fafafa;
-  padding: 0 3rem;
   border-radius: 8px;
-  min-width: 250px;
+  -webkit-box-shadow: 10px 10px 60px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 60px 0px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 60px 0px rgba(0,0,0,0.75);
+}
+
+.tooltip {
+    min-width: 250px;
+    padding: 0 3rem;
+}
+
+.tooltip-bar {
+  padding: 0.25rem 0.75rem;
 }
 
 .tooltip-data,
@@ -68,10 +78,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .tooltip-data {
   font-size: 1rem;
+  font-weight: 600;
 }
 
 .tooltip-header {
-  text-decoration: underline;
+  font-weight: 300;
+  font-style: italic;
   font-size: 1.1275rem;
 }
 
@@ -102,8 +114,17 @@ h1, h2, h3, h4, h5, h6 {
   margin: 1rem 0;
 }
 
+/* Bar Chart */
+
+.bar:hover{
+  fill: #86bfb2;
+
+  transition: all 0.3s ease;
+}
+
 #chart-header {
   font-weight: 300;
+  font-size: 2rem;
 }
 
 
@@ -129,7 +150,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.275rem !important;
 }
 
-.tb-type-header {
+#header, .tb-type-header {
   font-family: var(--font-primary);
   font-weight: 300;
   font-size: 4rem !important;

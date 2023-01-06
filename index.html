@@ -24,13 +24,9 @@
 <body>
     <main>
         <section id="tb-overall--meta">
-
-             <header id="header-wrapper" class="d-flex justify-content-end me-5">
-
-             </header>
              <div class="container-fluid">
                 <div class="row">
-                    <div class="col-6" id="map-container">
+                    <div class="col-12 col-md-6" id="map-container">
                         <svg id="sales-map"></svg>
                          <div id="btn-container">
                              <button class="btn btn-success" id="toggle_toothbrush_2000">Toothbrush 2000</button>
@@ -38,7 +34,10 @@
                              <button class="btn btn-success" id="toggle_all_toothbrushes">All Toothbrushes</button>
                          </div>
                     </div>
-                    <div class="col-6 d-flex flex-column justify-content-end">
+                    <div class="col-12 col-md-6 d-flex flex-column justify-content-around">
+                            <div>
+                                <h1 id="header">Header</h1>
+                            </div>
                             <article id="meta-info-container">
                                 <h1 id="chart-header">Sales Per Age Group</h1>
                                 <div id="sales-chart"></div>

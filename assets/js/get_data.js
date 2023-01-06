@@ -1,4 +1,4 @@
-BASE_API_URL = 'http://0.0.0.0:8000/api/orders'
+BASE_API_URL = 'http://127.0.0.1:8000/api/orders'
 
 async function getData(endpoint) {
   const url = `${BASE_API_URL}${endpoint}`;
