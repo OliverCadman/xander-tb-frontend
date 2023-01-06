@@ -149,7 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .select("body")
       .append("div")
       .attr("class", "tooltip")
-      .style("opacity", 0);
+
+     
 
     let mouseOver = function (d) {
       d3.selectAll(".Country").transition().duration(200).style("opacity", 1);
@@ -167,32 +168,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (d.properties.hasOwnProperty("total_tb_sales")) {
         toolTip
-          .style("opacity", 0.8)
+          .style("opacity", 1)
+          .style("padding", ".75rem")
           .html(
             `
                 <h3>${postcodeObj[d.id]}</h3>
-                <p>
-                  Total Sales: ${d.properties.total_tb_sales}
-                </p>
-                 <p>
-                  Toothbrush 2000 Sales: ${d.properties.tb_2000_sales}
-                </p>
-                <p>
-                  Toothbrush 4000 Sales: ${d.properties.tb_4000_sales}
-                </p>
-                <p>
-                  Average Customer Age: ${d.properties.avg_customer_age}
-                </p>
-                <p>
-                  Average Delivery Time: ${formatDelta(
-                    d.properties.avg_delivery_delta
-                  )}
-                </p>
+                <dl>
+                  <dt class='tooltip-header'>Total Sales</dt>
+                  <dd class='tooltip-data'>${d.properties.total_tb_sales}</dd>
+                  <dt class='tooltip-header'>Toothbrush 2000 Sales</dt>
+                  <dd class='tooltip-data'>${d.properties.tb_2000_sales}</dd>
+                  <dt class='tooltip-header'>Toothbrush 4000 Sales</dt>
+                  <dd class='tooltip-data'>${d.properties.tb_4000_sales}</dd>
+                  <dt class='tooltip-header'>Average Customer Age</dt>
+                  <dd class='tooltip-data'>${d.properties.avg_customer_age}</dd>
+                  <dt class='tooltip-header'>Average Delivery Time</dt>
+                  <dd class='tooltip-data'>${d.properties.avg_delivery_delta}</dd>
+                </dl>
               `
           )
-          .style("left", window.innerWidth / 2 - 250 + "px")
-          .style("top", "45px")
-          .style("width", "45vw");
+          .transition()
+          .style("left", d3.event.x + "px")
+          .style("top", () => {
+            const mousePosition = d3.mouse(this);
+            const mouseY = mousePosition[1];
+            const bottomHalf = window.innerHeight / 2;
+            if (mouseY > bottomHalf) {
+              return d3.event.y - bottomHalf / 2 - 175 + "px";
+            }
+            return d3.event.y + 25 + "px";
+          });
       }
     };
 
@@ -349,23 +354,30 @@ document.addEventListener("DOMContentLoaded", () => {
       .append("g")
       .attr("transform", "translate(0," + height + ")")
       .style("font-family", "Jost, sans-serif")
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x).tickFormat((d, i) => {
+        if (i === 0) {
+          return `0 - ${d}`;
+        } else {
+          return `${String(parseInt(d) - 10)} - ${d}`;
+        }
+      }));
 
     
     svgBarChart.append("g").style("font-family", "Jost, sans-serif").call(d3.axisLeft(y));
 
+    const xKeyObj = {}
     // Bars
     svgBarChart
       .selectAll("mybar")
       .data(ageKeys)
       .enter()
       .append("rect")
-      .attr("x", (d) => x(d))
+      .attr("x", d => x(d))
       .attr("y", (d) => y(convertedObj[d]))
       .attr("width", x.bandwidth())
       .transition()
       .ease(d3.easeElastic)
-      .duration(500)
+      .duration(1000)
       .delay((d, i) => i * 50)
       .attr("height", (d) => height - y(convertedObj[d]))
       .attr("fill", "#69b3a2");
@@ -391,7 +403,13 @@ document.addEventListener("DOMContentLoaded", () => {
       .append("g")
       .attr("transform", "translate(0," + height + ")")
       .style("font-family", "Jost, sans-serif")
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x).tickFormat((d, i) => {
+        if (i === 0) {
+          return `0 - ${d}`;
+        } else {
+          return `${String(parseInt(d) - 10)} - ${d}`;
+        }
+      }));
 
     svgBarChart.append("g").style("font-family", "Jost, sans-serif").call(d3.axisLeft(y));
 
@@ -405,7 +423,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .attr("width", x.bandwidth())
       .transition()
       .ease(d3.easeElastic)
-      .duration(500)
+      .duration(1000)
       .delay((d, i) => i * 50)
       .attr("height", (d) => height - y(convertedObj[d]))
       .attr("fill", "#69b3a2");
