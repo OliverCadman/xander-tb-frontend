@@ -108,11 +108,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const displayMap = (fullDataByPostcode, toothbrushType=null) => {
     let nullPostcodes = [];
-
+    let topo;
     var path = d3.geoPath().projection(projection);
 
     d3.json("../assets/data/uk-postcode-area.json", function (error, uk) {
-      const topo = topojson.feature(
+      topo = topojson.feature(
         uk,
         uk.objects["uk-postcode-area"]
       ).features;
@@ -210,18 +210,14 @@ document.addEventListener("DOMContentLoaded", () => {
         .style("stroke", "black")
         .transition()
         .duration(200)
-        .style("opacity", function (d) {
-          if (!_.isEmpty(d.properties)) {
-            return 0.75;
-          }
-        })
         .style("lineWidth", 5)
         .style("cursor", "pointer");
 
       if (d.properties.hasOwnProperty("total_tb_sales")) {
         toolTip
           .style("opacity", 1)
-          .style("padding", ".75rem");
+          .style("padding", ".75rem") 
+       
         
         if (!toothbrushType || toothbrushType === "all_toothbrushes") {
           toolTip.html(
@@ -293,7 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     let mouseLeave = function (d) {
-      d3.selectAll(".Country").transition().duration(200).style("opacity", 0.8);
+      d3.selectAll(".Country").transition().duration(200).style("opacity", 1);
       d3.select(this).transition().duration(200).style("stroke", "#aaa");
 
       toolTip.style("opacity", 0);
