@@ -24,7 +24,6 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-primary);
 }
 
-#tb-overall--meta,
 #tb-2000--meta {
   margin-bottom: 5rem;
 }
@@ -69,6 +68,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .tooltip-bar {
   padding: 0.25rem 0.75rem;
+  opacity: 0;
 }
 
 .tooltip-data,
@@ -173,6 +173,13 @@ h1, h2, h3, h4, h5, h6 {
   height: 70vh;
 }
 
+.meta-lead {
+  font-family: var(--font-primary);
+  font-size: 1.75rem;
+  color:rgb(--darkerblue);
+  font-weight: 300;
+}
+
 #tb-2000-header--container {
   position: relative;
 
@@ -180,6 +187,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .tb-type-header--wrapper {
    margin-right: 2.275rem;
+   padding: 2rem 0;
 }
 
 #tb-2000-header--wrapper div p {
@@ -192,7 +200,27 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 300;
   font-size: 4rem !important;
   font-style: italic;
-  color: var(--lightblue);
+  color: var(--midnightblue);
+}
+
+.tb-strategy--wrapper {
+  padding: 0 4rem;
+}
+
+.strategy-wrapper,
+.meta-detail-header {
+    font-family: var(--font-primary);
+}
+
+
+.meta-detail-header {
+  font-size: 1.5rem;
+  color:rgb(164, 164, 164)
+}
+
+.meta-detail {
+  font-size: 2rem;
+  color: var(--darkerblue);
 }
 
 .tb-img {
@@ -204,12 +232,16 @@ h1, h2, h3, h4, h5, h6 {
   filter: drop-shadow(5px 40px 20px #222);
   position: absolute;
   left: 0;
-  bottom: -125px;
+  bottom: calc(250px - 20%);
 }
 
 .border--1 {
   border-right: 4px solid #efefef;
   
+}
+
+.tb-header--container {
+  background-color: #d6dcff;
 }
 
 
