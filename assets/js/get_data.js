@@ -1,4 +1,4 @@
-BASE_API_URL = 'http://0.0.0.0:8000/api/orders'
+BASE_API_URL = "http://ec2-18-216-75-132.us-east-2.compute.amazonaws.com/api/orders";
 
 async function getData(endpoint) {
   const url = `${BASE_API_URL}${endpoint}`;
