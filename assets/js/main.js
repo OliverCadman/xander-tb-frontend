@@ -1,8 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const scrollTargets = document.querySelectorAll('.scroll-target');
 
   const displayHeader = (content) => {
     $('#header').text(content);
   }
+  
+  const handleScroll = () => {
+
+    const triggerBottom = window.innerHeight / 5 * 4;
+
+    const targetEl2000 = document.getElementById('tb-2000--meta');
+    const targetTop2000 = targetEl2000.getBoundingClientRect().top;
+    const targetEl4000 = document.getElementById('tb-4000--meta');
+    const targetTop4000 = targetEl4000.getBoundingClientRect().top;
+
+    scrollTargets.forEach((target) => {
+      if (target.classList.contains('2000')) {
+        if (targetTop2000 < triggerBottom) {
+          target.classList.add("show");
+          tb2000HeaderTargetHit = true;
+        } 
+      } else {
+        if (targetTop4000 < triggerBottom) {
+          target.classList.add("show");
+          tb4000HeaderTargetHit = true;
+        } 
+      }
+    })
+    
+  }
+
+    document.addEventListener("scroll", handleScroll);
 
   const toggleActiveBtnStyles = (toothbrushType) => {
     const buttons = document.querySelectorAll(".btn");
@@ -423,8 +451,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const displayOrderQuantityBarChart = (divID, data, property) => {
     let convertedObj;
     let elID = divID;
-    let keys, postcodeKeys;
+    let keys;
 
+    let targetHit = false;
     const barChart = d3
       .select(elID)
       .append("svg")
@@ -435,11 +464,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (property === "customer_age") {
       convertedObj = convertData(data, "customer_age", "order_quantity");
- 
-    } else {
-      convertedObj = convertPostcodeAreaToKey(data);
-      console.log(convertedObj);
-  
     }
 
     keys = Object.keys(convertedObj);
@@ -494,25 +518,40 @@ document.addEventListener("DOMContentLoaded", () => {
       .call(d3.axisLeft(y));
 
     // Bars
-    barChart
-      .selectAll("mybar")
-      .data(keys)
-      .enter()
-      .append("rect")
-      .attr("class", "bar")
-      .attr("x", (d) => x(d))
-      .attr("y", (d) => y(convertedObj[d]))
-      .attr("width", x.bandwidth())
-      .on("mouseover", onMouseOverBar)
-      .on("mouseout", onMouseOutBar)
-      .transition()
-      .ease(d3.easeElastic)
-      .duration(1000)
-      .delay((d, i) => i * 50)
-      .attr("height", (d) => height - y(convertedObj[d]))
-      .attr("fill", "#69b3a2");
-  
+ 
+    
+    
+    document.addEventListener('scroll', () => {
 
+      if (targetHit) return;
+      console.log('scrolling');
+      const triggerBottom = (window.innerHeight / 5) * 3;
+      const triggerEl = $(elID)[0];
+      const elTop = triggerEl.getBoundingClientRect().top;
+
+      if (elTop < triggerBottom) {
+           barChart
+             .selectAll("mybar")
+             .data(keys)
+             .enter()
+             .append("rect")
+             .attr("class", "bar")
+             .attr("x", (d) => x(d))
+             .attr("y", (d) => y(convertedObj[d]))
+             .attr("width", x.bandwidth())
+             .on("mouseover", onMouseOverBar)
+             .on("mouseout", onMouseOutBar)
+             .transition()
+             .ease(d3.easeElastic)
+             .duration(1000)
+             .delay((d, i) => i * 50)
+             .attr("height", (d) => height - y(convertedObj[d]))
+             .attr("fill", "#69b3a2");
+
+            targetHit = true;
+      }
+    })
+  
     function onMouseOverBar(d, i, m) {
       let scrollTop = $(window).scrollTop();
   

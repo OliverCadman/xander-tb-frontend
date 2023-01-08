@@ -24,11 +24,6 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-primary);
 }
 
-#tb-2000--meta {
-  margin-bottom: 5rem;
-}
-
-
 #tb-overall--meta {
   position: relative;
   height: 95vh;
@@ -238,7 +233,7 @@ h1, h2, h3, h4, h5, h6 {
   filter: drop-shadow(5px 40px 20px #222);
   position: absolute;
   left: 0;
-  bottom: calc(250px - 20%);
+  bottom: calc(250px - 10%);
 }
 
 .border--1 {
@@ -252,10 +247,31 @@ h1, h2, h3, h4, h5, h6 {
 
 .barchart-container {
   position: relative;
-  margin: 5rem 0;
+  margin: 2rem 0;
   font-family: var(--font-primary);
 }
 
 .postcode-performance-container {
   margin-bottom: 5rem;
+}
+
+.scroll-target {
+  transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+  -webkit-transition-delay: .3s;
+  -o-transition-delay: .3s;
+  transition-delay: .3s;
+  -webkit-transition: all 1.175s ease-out;
+  -o-transition: all 1.175s ease-out;;
+  transition: all 1.175s ease-out;
+  opacity: 0;
+}
+
+.scroll-target.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.tb-img.scroll-target.show {
+  transform: rotate(45deg);
 }
