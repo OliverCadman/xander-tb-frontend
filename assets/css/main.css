@@ -31,7 +31,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #tb-overall--meta {
   position: relative;
-  height: 100%;
+  height: 95vh;
   background-color: #f9f9f9;
 }
 
@@ -159,11 +159,17 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.3s ease;
 }
 
-#chart-header {
+.chart-header {
+  font-family: var(--font-primary);
   font-weight: 300;
   font-size: 2rem;
 }
 
+.label {
+  font-family: var(--font-primary);
+  fill:#909090;
+
+}
 
 /* Toothbrush 2000 Section */
 
@@ -241,9 +247,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tb-header--container {
-  background-color: #d6dcff;
+  background: linear-gradient(90deg, rgb(212, 220, 255) 20%, rgba(255,255,255,1) 100%);
 }
 
+.barchart-container {
+  position: relative;
+  margin: 5rem 0;
+  font-family: var(--font-primary);
+}
 
-
-
+.postcode-performance-container {
+  margin-bottom: 5rem;
+}

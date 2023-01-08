@@ -43,10 +43,10 @@
                     </div>
                     <div class="col-12 col-md-6 d-flex flex-column justify-content-around">
                             <div>
-                                <h1 id="header">Header</h1>
+                                <h1 id="header"></h1>
                             </div>
                             <article id="meta-info-container">
-                                <h1 id="chart-header">Sales Per Age Group</h1>
+                                <h1 class="chart-header">Sales Per Age Group</h1>
                                 <div id="sales-chart"></div>
                             </article>
                     </div>
@@ -84,6 +84,46 @@
                 </div>
             </div>
         </section>
+        <section>
+            <div class="container-fluid barchart-container">
+                <div class="row">
+                    <div class="col-6">
+                        <h4 class="chart-header">Order Quantity Per Age Group</h4>
+                         <div id="order-quantity-tb2000-age"></div>
+                    </div>
+                    <div class="col-6">
+                        <div class="postcode-performance-container best">
+                             <h4 class="chart-header">Best Performing Postcodes</h4>
+                            <table id="postcode-performance-best" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Postcode Area</th>
+                                        <th>Order Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-data-best">
+
+                                </tbody>
+                            </table>
+                        </div>
+                       <div class="postcode-performance-container best">
+                           <h4 class="chart-header">Worst Performing Postcodes</h4>
+                           <table id="postcode-performance-worst" class="table">
+                               <thead>
+                                   <tr>
+                                       <th>Postcode Area</th>
+                                       <th>Order Quantity</th>
+                                   </tr>
+                               </thead>
+                               <tbody id="table-data-worst">
+
+                               </tbody>
+                           </table>
+                       </div>   
+                    </div>
+                </div>
+            </div>
+        </section>
         <section id="tb-4000--meta">
             <div class="container-fluid h-100">
                 <div class="row h-100">
@@ -113,6 +153,46 @@
                         </div>
                         
                     </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="container-fluid barchart-container">
+                <div class="row">
+                    <div class="col-6">
+                        <h4 class="chart-header">Order Quantity Per Age Group</h4>
+                        <div id="order-quantity-tb4000-age"></div>
+                    </div>
+                      <div class="col-6">
+                          <div class="postcode-performance-container best">
+                              <h4 class="chart-header">Best Performing Postcodes</h4>
+                              <table id="postcode-performance-best" class="table">
+                                  <thead>
+                                      <tr>
+                                          <th>Postcode Area</th>
+                                          <th>Order Quantity</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="table-data-tb4000-best">
+
+                                  </tbody>
+                              </table>
+                          </div>
+                          <div class="postcode-performance-container best">
+                              <h4 class="chart-header">Worst Performing Postcodes</h4>
+                              <table id="postcode-performance-worst" class="table">
+                                  <thead>
+                                      <tr>
+                                          <th>Postcode Area</th>
+                                          <th>Order Quantity</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="table-data-tb4000-worst">
+
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
                 </div>
             </div>
         </section>
