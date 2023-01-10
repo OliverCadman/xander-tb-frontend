@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const scrollTargets = document.querySelectorAll(".scroll-target");
+  let loading;
+  const scrollTargets = document.querySelectorAll(".scroll-target");
 
   const handleScroll = () => {
     const triggerBottom = (window.innerHeight / 5) * 4;
@@ -692,6 +693,8 @@ document.addEventListener("DOMContentLoaded", () => {
   d3.selectAll(".filter-btn").on("click", async function () {
     let fullData, header, toothbrushType;
 
+    toggleLoadSpinner(true);
+
     const btnID = d3.select(this).attr("id");
     if (btnID === "toggle_toothbrush_2000") {
 
@@ -725,10 +728,14 @@ document.addEventListener("DOMContentLoaded", () => {
     displaySalesByAgeChart(fullData.sales_by_age);
     displayHeader(header);
     toggleActiveBtnStyles(toothbrushType);
+
+    toggleLoadSpinner(false);
   });
 
   const init = async () => {
     // Make the various API requests
+
+    toggleLoadSpinner(true);
 
     const fullData = await getData("/full_orders/get_full_data");
 
@@ -738,6 +745,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const tb4000FullData = await getData(
       "/full_orders/get_full_data_by_tb_type?toothbrush_type=toothbrush_4000"
     );
+
+    loading = false;
 
     displayMap(fullData.data_by_postcode);
 
@@ -782,6 +791,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let header = "All Toothbrushes";
     displayHeader(header);
+
+    toggleLoadSpinner(false);
   };
 
   init();
@@ -838,5 +849,15 @@ const convertData = (data, property1, property2) => {
   }
   return convertedObj;
 };
+
+const toggleLoadSpinner = (loading) => {
+   if (loading) {
+     $(".loading").addClass("show-loading");
+     $(".tb-main").addClass("hide-main");
+   } else {
+     $(".loading").removeClass("show-loading");
+     $(".tb-main").removeClass("hide-main");
+   }
+}
 
 
