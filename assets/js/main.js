@@ -1,36 +1,40 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const scrollTargets = document.querySelectorAll('.scroll-target');
+    const scrollTargets = document.querySelectorAll(".scroll-target");
 
-  const displayHeader = (content) => {
-    $('#header').text(content);
-  }
-  
   const handleScroll = () => {
+    const triggerBottom = (window.innerHeight / 5) * 4;
 
-    const triggerBottom = window.innerHeight / 5 * 4;
-
-    const targetEl2000 = document.getElementById('tb-2000--meta');
+    const targetEl2000 = document.getElementById("tb-2000--meta");
     const targetTop2000 = targetEl2000.getBoundingClientRect().top;
-    const targetEl4000 = document.getElementById('tb-4000--meta');
+    const targetEl4000 = document.getElementById("tb-4000--meta");
     const targetTop4000 = targetEl4000.getBoundingClientRect().top;
 
     scrollTargets.forEach((target) => {
-      if (target.classList.contains('2000')) {
+      if (target.classList.contains("2000")) {
         if (targetTop2000 < triggerBottom) {
           target.classList.add("show");
           tb2000HeaderTargetHit = true;
-        } 
+        }
       } else {
         if (targetTop4000 < triggerBottom) {
           target.classList.add("show");
           tb4000HeaderTargetHit = true;
-        } 
+        }
       }
-    })
-    
-  }
+    });
+  };
 
-    document.addEventListener("scroll", handleScroll);
+  document.addEventListener("scroll", handleScroll);
+
+
+  let toolTipBar = d3
+    .select("body")
+    .append("div")
+    .attr("class", "tooltip-bar");
+
+  const displayHeader = (content) => {
+    $('#header').text(content);
+  }
 
   const toggleActiveBtnStyles = (toothbrushType) => {
     const buttons = document.querySelectorAll(".btn");
@@ -50,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const fd = null;
   const fdTB2000 = null;
   const fdTB4000 = null;
-
+  
   const keys = [5, 10, 30, 50, 100, 200, 350, 500];
   let color = d3.scaleThreshold().domain(keys).range(d3.schemeBlues[9]);
 
@@ -77,18 +81,19 @@ document.addEventListener("DOMContentLoaded", () => {
   var svgBarChart = d3
     .select("#sales-chart")
     .append("svg")
-    .attr("class", "sales-chart")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  
+  let bottomAxis, leftAxis;
 
   // Legend
+
   svg
     .append("text")
     .attr("x", 40)
     .attr("y", 75)
-    .attr("class", "chart-header")
     .attr("font-family", "Jost, sans-serif")
     .attr("font-size", "2rem")
     .attr("font-weight", "300")
@@ -131,11 +136,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Default filter button style
   $('#toggle_all_toothbrushes').addClass('active');
-
-     let toolTipBar = d3
-       .select("body")
-       .append("div")
-       .attr("class", "tooltip-bar");
 
 
   const displayMap = (fullDataByPostcode, toothbrushType=null) => {
@@ -192,6 +192,11 @@ document.addEventListener("DOMContentLoaded", () => {
         $('#null-postcode-list').html(nullPostcodeHTML)
 
      }
+
+      svg.append('div').attr('x', 45).attr('y', window.innerHeight / 2).html(
+        `<p>hello</p>`
+      )
+
       svg
         .append("path")
         .datum(
@@ -448,161 +453,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const displayOrderQuantityBarChart = (divID, data, property) => {
-    let convertedObj;
-    let elID = divID;
-    let keys;
-
-    let targetHit = false;
-    const barChart = d3
-      .select(elID)
-      .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    if (property === "customer_age") {
-      convertedObj = convertData(data, "customer_age", "order_quantity");
-    }
-
-    keys = Object.keys(convertedObj);
-   
-    // X axis
-    var x = d3.scaleBand().range([0, width]).domain(keys).padding(0.2);
-
-    // Add Y axis
-    var y = d3
-      .scaleLinear()
-      .domain([0, d3.max(keys, (d) => convertedObj[d])])
-      .range([height, 0]);
-    leftAxis = d3.axisLeft(y);
-    
-
-    barChart
-      .append("text")
-      .attr("class", "label")
-      .attr("text-anchor", "middle")
-      .attr("x", width / 2)
-      .attr("y", height + 40)
-      .text('Age Group');
-
-    barChart
-      .append("text")
-      .attr("class", "label")
-      .attr("text-anchor", "middle")
-      .attr("y", -55)
-      .attr("x", -170)
-      .attr("dy", ".75em")
-      .attr("transform", "rotate(-90)")
-      .text("Order Quantity");
-
-    barChart
-      .append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .style("font-family", "Jost, sans-serif")
-      .attr("font-size", "0.2rem")
-      .call(
-        d3.axisBottom(x).tickFormat((d, i) => {
-          if (i === 0) {
-            return `0 - ${d}`;
-          } else {
-            return `${String(parseInt(d) - 10)} - ${d}`;
-          }
-        })
-      );
-
-    barChart
-      .append("g")
-      .style("font-family", "Jost, sans-serif")
-      .call(d3.axisLeft(y));
-
-    // Bars
- 
-    
-    
-    document.addEventListener('scroll', () => {
-
-      if (targetHit) return;
-      console.log('scrolling');
-      const triggerBottom = (window.innerHeight / 5) * 3;
-      const triggerEl = $(elID)[0];
-      const elTop = triggerEl.getBoundingClientRect().top;
-
-      if (elTop < triggerBottom) {
-           barChart
-             .selectAll("mybar")
-             .data(keys)
-             .enter()
-             .append("rect")
-             .attr("class", "bar")
-             .attr("x", (d) => x(d))
-             .attr("y", (d) => y(convertedObj[d]))
-             .attr("width", x.bandwidth())
-             .on("mouseover", onMouseOverBar)
-             .on("mouseout", onMouseOutBar)
-             .transition()
-             .ease(d3.easeElastic)
-             .duration(1000)
-             .delay((d, i) => i * 50)
-             .attr("height", (d) => height - y(convertedObj[d]))
-             .attr("fill", "#69b3a2");
-
-            targetHit = true;
-      }
-    })
-  
-    function onMouseOverBar(d, i, m) {
-      let scrollTop = $(window).scrollTop();
-  
-      let el = $(elID);
-      let elOffset = el.offset().top;
-      console.log(elOffset)
-      let distance = elOffset - scrollTop;
-      console.log('DISTANCE FROM TOP:', distance)
-      const xPos = d3.event.x;
-      const yPos = d3.event.y / 2 + elOffset;
-
-      console.log(xPos, yPos)
-
-      toolTipBar
-        .html(
-          `
-            <dl>
-              <dt class='tooltip-header'>Total Orders</dt>
-              <dd class='tooltip-data'>${convertedObj[d]}</dd>
-            </dl>
-         `
-        )
-        .style("cursor", "pointer")
-        .transition()
-        .duration(200)
-        .style("opacity", 1)
-        .style("left", xPos + "px")
-        .style("top", yPos + "px");
-    }
-
-    function onMouseOutBar() {
-      toolTipBar.transition().duration(200).style("opacity", 0);
-    }
-  }
-
   const displaySalesByAgeChart = (data) => {
     
     svgBarChart.selectAll("rect").remove();
     svgBarChart.selectAll("g").remove();
 
-    const convertedObj = convertData(data, 'customer_age', 'total_sales')
+    const convertedObj = convertSalesByAgeObj(data);
 
-    const keys = Object.keys(convertedObj);
-    console.log(convertedObj);
+    const ageKeys = Object.keys(convertedObj);
     // X axis
-    var x = d3.scaleBand().range([0, width]).domain(keys).padding(0.2);
+    var x = d3.scaleBand().range([0, width]).domain(ageKeys).padding(0.2);
     
     // Add Y axis
     var y = d3
       .scaleLinear()
-      .domain([0, d3.max(keys, (d) => convertedObj[d])])
+      .domain([0, d3.max(ageKeys, (d) => convertedObj[d])])
       .range([height, 0]);
     leftAxis = d3.axisLeft(y);
 
@@ -621,33 +486,17 @@ document.addEventListener("DOMContentLoaded", () => {
     
     svgBarChart.append("g").style("font-family", "Jost, sans-serif").call(d3.axisLeft(y));
 
-    svgBarChart.append("text")
-    .attr("class", "label")
-    .attr("text-anchor", "middle")
-    .attr("x", width / 2)
-    .attr("y", height + 40)
-    .text("Age Group");
-
-    svgBarChart.append("text")
-    .attr("class", "label")
-    .attr("text-anchor", "middle")
-    .attr("y", -50)
-    .attr("x", -150)
-    .attr("dy", ".75em")
-    .attr("transform", "rotate(-90)")
-    .text("Sales")
-
     // Bars
     svgBarChart
       .selectAll("mybar")
-      .data(keys)
+      .data(ageKeys)
       .enter()
       .append("rect")
       .attr("class", "bar")
       .attr("x", (d) => x(d))
       .attr("y", (d) => y(convertedObj[d]))
       .attr("width", x.bandwidth())
-      .on("mouseover", onMouseOverBar, keys)
+      .on("mouseover", onMouseOverBar, ageKeys)
       .on("mouseout", onMouseOutBar)
       .transition()
       .ease(d3.easeElastic)
@@ -659,7 +508,7 @@ document.addEventListener("DOMContentLoaded", () => {
        function onMouseOverBar(d, i, m) {
          const xPos = d3.event.x
          const yPos = d3.event.y
-         console.log(toolTipBar)
+
          toolTipBar
 
            .html(
@@ -686,209 +535,253 @@ document.addEventListener("DOMContentLoaded", () => {
 
   };
 
-  const displayDonutChart = (divID, data, property) => {
+    const displayOrderQuantityBarChart = (divID, data, property) => {
+      let convertedObj;
+      let elID = divID;
+      let keys;
 
-    const obj = {}
+      let targetHit = false;
+      const barChart = d3
+        .select(elID)
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    for (i of data) {
-      obj[i[property]] = i.order_quantity
+      if (property === "customer_age") {
+        convertedObj = convertData(data, "customer_age", "order_quantity");
+      }
+
+      keys = Object.keys(convertedObj);
+
+      // X axis
+      var x = d3.scaleBand().range([0, width]).domain(keys).padding(0.2);
+
+      // Add Y axis
+      var y = d3
+        .scaleLinear()
+        .domain([0, d3.max(keys, (d) => convertedObj[d])])
+        .range([height, 0]);
+      leftAxis = d3.axisLeft(y);
+
+      barChart
+        .append("text")
+        .attr("class", "label")
+        .attr("text-anchor", "middle")
+        .attr("x", width / 2)
+        .attr("y", height + 40)
+        .text("Age Group");
+
+      barChart
+        .append("text")
+        .attr("class", "label")
+        .attr("text-anchor", "middle")
+        .attr("y", -55)
+        .attr("x", -170)
+        .attr("dy", ".75em")
+        .attr("transform", "rotate(-90)")
+        .text("Order Quantity");
+
+      barChart
+        .append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .style("font-family", "Jost, sans-serif")
+        .attr("font-size", "0.2rem")
+        .call(
+          d3.axisBottom(x).tickFormat((d, i) => {
+            if (i === 0) {
+              return `0 - ${d}`;
+            } else {
+              return `${String(parseInt(d) - 10)} - ${d}`;
+            }
+          })
+        );
+
+      barChart
+        .append("g")
+        .style("font-family", "Jost, sans-serif")
+        .call(d3.axisLeft(y));
+
+      // Bars
+
+      document.addEventListener("scroll", () => {
+        if (targetHit) return;
+
+        const triggerBottom = (window.innerHeight / 5) * 3;
+        const triggerEl = $(elID)[0];
+        const elTop = triggerEl.getBoundingClientRect().top;
+
+        if (elTop < triggerBottom) {
+          barChart
+            .selectAll("mybar")
+            .data(keys)
+            .enter()
+            .append("rect")
+            .attr("class", "bar")
+            .attr("x", (d) => x(d))
+            .attr("y", (d) => y(convertedObj[d]))
+            .attr("width", x.bandwidth())
+            .on("mouseover", onMouseOverBar)
+            .on("mouseout", onMouseOutBar)
+            .transition()
+            .ease(d3.easeElastic)
+            .duration(1000)
+            .delay((d, i) => i * 50)
+            .attr("height", (d) => height - y(convertedObj[d]))
+            .attr("fill", "#69b3a2");
+
+          targetHit = true;
+        }
+      });
+
+      function onMouseOverBar(d, i, m) {
+        let scrollTop = $(window).scrollTop();
+
+        let el = $(elID);
+        let elOffset = el.offset().top;
+
+        const xPos = d3.event.x;
+        const yPos = d3.event.y / 2 + elOffset;
+
+        toolTipBar
+          .html(
+            `
+            <dl>
+              <dt class='tooltip-header'>Total Orders</dt>
+              <dd class='tooltip-data'>${convertedObj[d]}</dd>
+            </dl>
+         `
+          )
+          .style("cursor", "pointer")
+          .transition()
+          .duration(200)
+          .style("opacity", 1)
+          .style("left", xPos + "px")
+          .style("top", yPos + "px");
+      }
+
+      function onMouseOutBar() {
+        toolTipBar.transition().duration(200).style("opacity", 0);
+      }
+    };
+
+  const displayTableData = (data, tableID, startIndex, endIndex = null) => {
+    let dataSlice;
+    if (endIndex) {
+      dataSlice = data.slice(startIndex, endIndex);
+    } else {
+      dataSlice = data.slice(startIndex);
     }
 
-    console.log(obj)
-
-    const width = 450;
-    const height = 450;
-    const margin = 40;
-
-    const radius = Math.min(width, height) / 2 - margin;
-
-
-    let pieSVG = d3.select(divID)
-      .append('svg')
-      .attr("width", width)
-      .attr("height", height)
-      .append('g')
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-    let color = d3
-      .scaleOrdinal()
-      .domain(obj)
-      .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56"]);
-    
-    let pie = d3.pie()
-              .value((d) => d.value);
-    
-    let dataReady = pie(d3.entries(obj));
-
-    pieSVG.selectAll("slices")
-      .data(dataReady)
-      .enter()
-      .append("path")
-      .attr(
-        "d",
-        d3
-          .arc()
-          .innerRadius(100) // This is the size of the donut hole
-          .outerRadius(radius)
-      )
-      .attr("fill", function (d) {
-        return color(d.data.key);
+    const html = dataSlice
+      .map((item) => {
+        return `
+      <tr>
+        <td>${postcodeObj[item.delivery_postcode__postcode_area]}</td>
+        <td>${item.order_quantity}</td>
+      </tr>
+    `;
       })
-      .attr("stroke", "black")
-      .style("stroke-width", "2px")
-      .style("opacity", 0.7);
+      .join("");
 
-  }
+    $(tableID).html(html);
+  };
 
   // Buttons to switch data sets
   d3.selectAll(".filter-btn").on("click", async function () {
-    let deliveryDeltas, customerAges, fullData, header, tbSalesByAge, toothbrushType;
+    let fullData, header, toothbrushType;
 
     const btnID = d3.select(this).attr("id");
     if (btnID === "toggle_toothbrush_2000") {
-      if (!fdTB2000) {
+
         fullData = await getData(
-          "/full_orders/get_full_data_by_postcode?toothbrush_type=toothbrush_2000"
+          "/full_orders/get_full_data?toothbrush_type=toothbrush_2000"
         );
-      } else {
-        fullData = fdTB2000;
-        console.log("TB2000 DATA EXISTS:", fullData);
-      }
-
-      deliveryDeltas = await getData(
-        "/full_orders/get_delivery_deltas?toothbrush_type=toothbrush_2000"
-      );
-
-      customerAges = await getData(
-        "/full_orders/get_customer_ages?toothbrush_type=toothbrush_2000"
-      );
-
-      tbSalesByAge = await getData(
-        "/full_orders/get_tb_sales_by_age?toothbrush_type=toothbrush_2000"
-      );
+    
 
       header = 'Toothbrush 2000';
       toothbrushType = 'toothbrush_2000'
     } else if (btnID === "toggle_toothbrush_4000") {
-      if (!fdTB4000) {
-        fullData = await getData(
-          "/full_orders/get_full_data_by_postcode?toothbrush_type=toothbrush_4000"
-        );
-      } else {
-        fullData = fdTB4000;
-        console.log("TB4000 DATA EXISTS:", fullData);
-      }
-
-      customerAges = await getData(
-        "/full_orders/get_customer_ages?toothbrush_type=toothbrush_4000"
-      );
-
-      deliveryDeltas = await getData(
-        "/full_orders/get_delivery_deltas?toothbrush_type=toothbrush_4000"
-      );
-
-      tbSalesByAge = await getData(
-        "/full_orders/get_tb_sales_by_age?toothbrush_type=toothbrush_4000"
-      );
+      
+       fullData = await getData(
+         "/full_orders/get_full_data?toothbrush_type=toothbrush_4000"
+       );
 
       header = 'Toothbrush 4000';
       toothbrushType = 'toothbrush_4000'
     } else {
-      if (!fd) {
-        fullData = await getData("/full_orders/get_full_data_by_postcode");
-      } else {
-        fullData = fd;
-        console.log("FULL DATA EXISTS:", fullData);
-      }
-
-      deliveryDeltas = await getData("/full_orders/get_delivery_deltas");
-
-      customerAges = await getData("/full_orders/get_customer_ages");
-
-      tbSalesByAge = await getData(
-        "/full_orders/get_tb_sales_by_age"
-      )
+       fullData = await getData(
+         "/full_orders/get_full_data"
+       );
 
       header = "All Toothbrushes";
       toothbrushType = 'all_toothbrushes'
     }
 
-    displayMap(fullData, toothbrushType);
-    displayMetaData(deliveryDeltas, customerAges, header);
-    displaySalesByAgeChart(tbSalesByAge);
+    console.log(fullData)
+
+    displayMap(fullData.data_by_postcode, toothbrushType);
+    displaySalesByAgeChart(fullData.sales_by_age);
     displayHeader(header);
     toggleActiveBtnStyles(toothbrushType);
   });
 
   const init = async () => {
     // Make the various API requests
-    const fullDataByPostcode = await getData(
-      "/full_orders/get_full_data_by_postcode"
-    );
-    const totalSalesPerTB = await getData("/count_tb_type");
 
-    const deliveryDeltas = await getData("/full_orders/get_delivery_deltas");
-
-    const customerAges = await getData("/full_orders/get_customer_ages");
+    const fullData = await getData("/full_orders/get_full_data");
 
     const tb2000FullData = await getData(
       "/full_orders/get_full_data_by_tb_type?toothbrush_type=toothbrush_2000"
     );
-
     const tb4000FullData = await getData(
       "/full_orders/get_full_data_by_tb_type?toothbrush_type=toothbrush_4000"
     );
 
-    const tbSalesByAge = await getData("/full_orders/get_tb_sales_by_age");
+    displayMap(fullData.data_by_postcode);
 
-    const tb2000OrderQuantityByAge = await getData(
-      "/full_orders/get_order_quantities?toothbrush_type=toothbrush_2000&customer_age=True"
-    );
-
-    const tb4000OrderQuantityByAge = await getData(
-      "/full_orders/get_order_quantities?toothbrush_type=toothbrush_4000&customer_age=True"
-    );
-
-    const tb2000OrderQuantityByPostcode = await getData(
-      "/full_orders/get_order_quantities?toothbrush_type=toothbrush_2000"
-    );
-
-    const tb4000OrderQuantityByPostcode = await getData(
-      "/full_orders/get_order_quantities?toothbrush_type=toothbrush_4000"
-    );
-
-    displayMap(fullDataByPostcode);
-    displayMetaData(deliveryDeltas, customerAges, totalSalesPerTB);
     displayTBData(tb2000FullData, tb4000FullData);
 
-    displaySalesByAgeChart(tbSalesByAge);
+    displaySalesByAgeChart(fullData.tb_sales_by_age);
 
-    let header = "All Toothbrushes";
-    displayHeader(header);
-
+    // Display Barcharts displaying order quantities for age groups
     displayOrderQuantityBarChart(
       "#order-quantity-tb2000-age",
-      tb2000OrderQuantityByAge,
+      fullData.tb_2000_orders_by_age,
       "customer_age"
     );
 
     displayOrderQuantityBarChart(
       "#order-quantity-tb4000-age",
-      tb4000OrderQuantityByAge,
+      fullData.tb_4000_orders_by_age,
       "customer_age"
     );
 
+    // Display tables for highest and lowest order quantities per postcode, per toothbrush type
     // TB2000
     // - Best Peforming Postcodes
-    displayTableData(tb2000OrderQuantityByPostcode, "#table-data-best", 0, 5);
+    displayTableData(fullData.tb_2000_orders_by_postcode, "#table-data-best", 0, 5);
     // - Worst Performing Postcodes
-    displayTableData(tb2000OrderQuantityByPostcode, "#table-data-worst", -5);
+    displayTableData(fullData.tb_4000_orders_by_postcode, "#table-data-worst", -5);
 
     // TB4000
     // - Best Peforming Postcodes
-    displayTableData(tb4000OrderQuantityByPostcode, "#table-data-tb4000-best", 0, 5);
+    displayTableData(
+      fullData.tb_4000_orders_by_postcode,
+      "#table-data-tb4000-best",
+      0,
+      5
+    );
     // - Worst Performing Postcodes
-    displayTableData(tb4000OrderQuantityByPostcode, "#table-data-tb4000-worst", -5);
+    displayTableData(
+      fullData.tb_4000_orders_by_postcode,
+      "#table-data-tb4000-worst",
+      -5
+    );
+
+    let header = "All Toothbrushes";
+    displayHeader(header);
   };
 
   init();
@@ -907,15 +800,16 @@ const convertPostCodeAreaToPostcode = (data) => {
  return data;
 };
 
-const convertData = (data, property1, property2) => {
+const convertSalesByAgeObj = (data) => {
   let convertedObj = {};
 
   let salesCount = 0;
 
   for (let i = 0; i < data.length; i++) {
-    const customerAge = data[i][property1]
+    const customerAge = data[i].customer_age;
     if (customerAge > 0) {
-      salesCount += data[i][property2]
+      salesCount += data[i].total_sales;
+
       if (customerAge % 10 === 0) {
         convertedObj[customerAge] = salesCount;
         salesCount = 0;
@@ -926,37 +820,23 @@ const convertData = (data, property1, property2) => {
   return convertedObj;
 };
 
-const displayTableData = (data, tableID, startIndex, endIndex=null) => {
-  let dataSlice;
-  if (endIndex) {
-    dataSlice = data.slice(startIndex, endIndex);
-  } else {
-    dataSlice = data.slice(startIndex)
+const convertData = (data, property1, property2) => {
+  let convertedObj = {};
+
+  let salesCount = 0;
+
+  for (let i = 0; i < data.length; i++) {
+    const customerAge = data[i][property1];
+    if (customerAge > 0) {
+      salesCount += data[i][property2];
+      if (customerAge % 10 === 0) {
+        convertedObj[customerAge] = salesCount;
+        salesCount = 0;
+        continue;
+      }
+    }
   }
-  
-
-  console.log(dataSlice);
-  
-  const html = dataSlice.map((item) => {
-    return `
-      <tr>
-        <td>${postcodeObj[item.delivery_postcode__postcode_area]}</td>
-        <td>${item.order_quantity}</td>
-      </tr>
-    `
-  }).join('');
-
-  $(tableID).html(html);
-}
-
-const convertPostcodeAreaToKey = (data) => {
-  const obj = {}
-
-  for (i of data) {
-    obj[i.delivery_postcode__postcode_area] = i.order_quantity
-  }
-
-  return obj
-}
+  return convertedObj;
+};
 
 
