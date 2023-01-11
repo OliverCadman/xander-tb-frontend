@@ -24,9 +24,75 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-primary);
 }
 
+hr {
+  margin: 0 !important;
+  padding: 0;
+  border-top:1px solid white !important;
+  opacity: 0.9 !important;
+}
+
 .tb-main.hide-main,
 .individual-tb-wrapper.hide-wrapper {
   display: none;
+}
+
+.banner-top {
+  position:sticky;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  transition: all 0.3s ease-in-out;
+}
+
+.banner-top.hide {
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  transform: translateY(-200%);
+}
+
+.banner.banner-top {
+  background-color: #dadaff;
+}
+
+.banner.banner-mid {
+  background-color: rgb(35, 35, 70);
+  color: #fafafa;
+}
+
+.banner-mid .banner-header,
+.banner-mid .banner-data {
+  color: #fafafa;
+}
+
+.banner-header,
+.banner-data {
+  font-family: var(--font-primary);
+  color: #454545;
+  padding: 0;
+  margin: 0;
+}
+
+.banner-header {
+  font-size: 1.275rem;
+  font-weight: 500;
+}
+
+.banner-data {
+  font-size: 1.875rem;
+  font-weight: 300;
+}
+
+.icon-container, .data-container {
+  display: inline-block;
+}
+
+.icon {
+  font-size: 2rem;
+}
+
+.bordered {
+  border-right: 1px solid white;
 }
 
 .loading {

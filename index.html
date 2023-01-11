@@ -20,6 +20,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Toothbrush Data</title>
 </head>
 <body>
     <div class="loading">
@@ -34,7 +38,34 @@
         </div>
     </div>
     <main class="tb-main">
-        <section id="tb-overall--meta" class="tb-overall--data">
+                <div class="container-fluid text-center banner banner-top" id="banner-top">
+                    <div class="row">
+                        <div class="col-3">
+                            <p class="banner-header">Total Orders</p>
+                            <hr>
+                            <p class="banner-data" id="total-orders"></p>
+                        </div>
+                        <div class="col-3">
+                            <p class="banner-header">
+                                Orders Today
+                            </p>
+                            <hr>
+                            <p class="banner-data" id="highest-performing-area"></p>
+                        </div>
+                        <div class="col-3">
+                            <p class="banner-header">Average Customer Age</p>
+                            <hr>
+                            <p class="banner-data" id="avg-cust-age"></p>
+                        </div>
+                        <div class="col-3">
+                            <p class="banner-header">Average Delivery Time</p>
+                            <hr>
+                            <p class="banner-data" id="avg-delivery-delta"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <section id="tb-overall--meta" class="tb-overall--data pb-5">
              <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 col-md-6" id="map-container">
@@ -64,6 +95,49 @@
                 </div>
              </div>
         </section>
+        <div class="banner banner-mid pt-5 pb-5">
+            <div class="container-fluid text-center">
+                <div class="row">
+                    <div class="col-4 d-flex justify-content-center bordered">
+                        <div class="icon-container d-flex align-items-center me-5">
+                            <i class="fa-solid fa-circle-check icon"></i>
+                        </div>
+                        <div class="data-container d-flex align-items-center flex-column justify-content-center">
+                            <p class="banner-header">
+                                Successful Deliveries
+                            </p>
+                            <hr>
+                            <p class="banner-data" id="successful-deliveries"></p>
+                        </div>
+                    </div>
+                    <div class="col-4 d-flex justify-content-center bordered">
+                        <div class="icon-container d-flex align-items-center me-5">
+                            <i class="fa-solid fa-circle-xmark icon"></i>
+                        </div>  
+                        <div class="data-container d-flex align-items-center flex-column justify-content-center">
+                            <p class="banner-header">
+                                <span><i class="fa-solid fa-circle-times icon"></i></span>
+                                Unsuccessful Deliveries
+                            </p>
+                            <hr>
+                            <p class="banner-data" id="unsuccessful-deliveries"></p>
+                        </div>
+                    </div>
+                    <div class="col-4 d-flex justify-content-center">
+                        <div class="icon-container d-flex align-items-center me-5">
+                            <i class="fa-solid fa-truck-fast icon"></i>
+                        </div>
+                        <div class="data-container d-flex align-items-center flex-column justify-content-center">
+                             <p class="banner-header">
+                                 Deliveries in Transit
+                             </p>
+                             <hr>
+                             <p class="banner-data" id="deliveries-in-transit"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="individual-tb-wrapper">
               <section id="tb-2000--meta">
                   <div class="container-fluid h-100">
