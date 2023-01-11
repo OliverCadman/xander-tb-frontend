@@ -26,8 +26,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const keys = [5, 10, 30, 50, 100, 200, 350, 500];
   let color = d3.scaleThreshold().domain(keys).range(d3.schemeBlues[9]);
 
-  var width = window.innerWidth / 2;
-  var height = window.innerHeight;
+  let width = window.innerWidth / 2;
+  let height;
+  
+  // JavaScript's equivalent of a media query
+  if (window.screen.width < 1920) {
+    height = window.innerHeight;
+  } else {
+    width = window.innerWidth / 2;
+    height = window.innerHeight / 2 + 100;
+  }
+  
+  
+  console.log(width, height)
 
   var projection = d3
     .geoAlbers()
@@ -41,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Bar Chart - Global Variables
   // set the dimensions and margins of the graph
-  var margin = { top: 30, right: 30, bottom: 70, left: 60 },
+  var margin = { top: 30, right: 30, bottom: 70, left: 60 };
     width = 600 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 

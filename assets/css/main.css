@@ -113,7 +113,6 @@ hr {
 
 #tb-overall--meta {
   position: relative;
-  height: 95vh;
   background-color: #f9f9f9;
 }
 
@@ -361,4 +360,11 @@ hr {
 
 .tb-img.scroll-target.show {
   transform: rotate(45deg);
+}
+
+@media screen and (min-width: 1920px) {
+  #tb-2000--meta,
+  #tb-4000--meta {
+    height: 50vh;
+  }
 }
