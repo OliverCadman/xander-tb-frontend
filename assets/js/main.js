@@ -643,8 +643,10 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       ordersToday = await getData(
-        "/todays_orders/count?toothbrush_type=toothbrush_2000"
+        "/todays_orders/get_todays_orders?toothbrush_type=toothbrush_2000"
       )
+
+
 
       header = "Toothbrush 2000";
       toothbrushType = "toothbrush_2000";
@@ -654,7 +656,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       ordersToday = await getData(
-        "/todays_orders/count?toothbrush_type=toothbrush_4000"
+        "/todays_orders/get_todays_orders?toothbrush_type=toothbrush_4000"
       );
 
       header = "Toothbrush 4000";
@@ -662,7 +664,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       fullData = await getData("/full_orders/get_full_data");
 
-      ordersToday = await getData("/todays_orders/count")
+      ordersToday = await getData("/todays_orders/get_todays_orders")
 
       header = "All Toothbrushes";
       toothbrushType = "all_toothbrushes";
@@ -702,7 +704,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     const ordersToday = await getData(
-      "/todays_orders/count"
+      "/todays_orders/get_todays_order_data"
     )
 
 
@@ -767,9 +769,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let header = "All Toothbrushes";
     displayHeader(header);
 
-    $('#successful-deliveries').text(fullData.delivery_statuses.delivery_successful);
-    $('#unsuccessful-deliveries').text(fullData.delivery_statuses.delivery_unsuccessful);
-    $('#deliveries-in-transit').text(fullData.delivery_statuses.delivery_in_transit);
+    $('#successful-deliveries').text(ordersToday.delivery_statuses.delivery_successful);
+    $('#unsuccessful-deliveries').text(ordersToday.delivery_statuses.delivery_unsuccessful);
+    $('#deliveries-in-transit').text(ordersToday.delivery_statuses.delivery_in_transit);
 
     toggleLoadSpinner(false);
   };

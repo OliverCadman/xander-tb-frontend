@@ -24,11 +24,23 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-primary);
 }
 
+#delivery-breakdown-header {
+  font-weight: 300;
+}
+
 hr {
   margin: 0 !important;
   padding: 0;
   border-top:1px solid white !important;
   opacity: 0.9 !important;
+}
+
+#banner-header-hr {
+  border-top: 3px solid white;
+  opacity: 1; 
+  width: 125%;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .tb-main.hide-main,
@@ -261,6 +273,10 @@ hr {
   height: 70vh;
 }
 
+.tb-wrapper {
+  height: 100%;
+}
+
 .meta-lead {
   font-family: var(--font-primary);
   font-size: 1.75rem;
@@ -361,4 +377,14 @@ hr {
 
 .tb-img.scroll-target.show {
   transform: rotate(45deg);
+}
+
+@media screen and (min-width: 1920px) {
+  #tb-overall--meta {
+    height: 50vh;
+  }
+
+  .tb-wrapper {
+    height: 35vh;
+  }
 }

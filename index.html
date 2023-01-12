@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+
 <head>
     <link rel="stylesheet" href="./assets/css/main.css">
     <script src="https://d3js.org/d3.v4.js">
-        </script>
-    <script src="./assets/data/postcode_convert.js"
-    <script src="https://cdn.jsdelivr.net/npm/d3-color@3"></script>
+    </script>
+    <script src="./assets/data/postcode_convert.js" <script src="https://cdn.jsdelivr.net/npm/d3-color@3"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3-interpolate@3"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3"></script>
     <script src="https://d3js.org/d3-array.v1.min.js"></script>
@@ -25,6 +25,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Toothbrush Data</title>
 </head>
+
 <body>
     <div class="loading">
         <div class="spinner-grow text-primary ms-2 me-2" role="status">
@@ -38,283 +39,292 @@
         </div>
     </div>
     <main class="tb-main">
-                <div class="container-fluid text-center banner banner-top" id="banner-top">
-                    <div class="row">
-                        <div class="col-3">
-                            <p class="banner-header">Total Orders</p>
-                            <hr>
-                            <p class="banner-data" id="total-orders"></p>
-                        </div>
-                        <div class="col-3">
-                            <p class="banner-header">
-                                Orders Today
-                            </p>
-                            <hr>
-                            <p class="banner-data" id="highest-performing-area"></p>
-                        </div>
-                        <div class="col-3">
-                            <p class="banner-header">Average Customer Age</p>
-                            <hr>
-                            <p class="banner-data" id="avg-cust-age"></p>
-                        </div>
-                        <div class="col-3">
-                            <p class="banner-header">Average Delivery Time</p>
-                            <hr>
-                            <p class="banner-data" id="avg-delivery-delta"></p>
-                        </div>
-                    </div>
+        <div class="container-fluid text-center banner banner-top" id="banner-top">
+            <div class="row">
+                <div class="col-3">
+                    <p class="banner-header">Total Orders</p>
+                    <hr>
+                    <p class="banner-data" id="total-orders"></p>
                 </div>
-            </div>
-        <section id="tb-overall--meta" class="tb-overall--data pb-5">
-             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12 col-md-6" id="map-container">
-                        <svg id="sales-map"></svg>
-                         <div id="btn-container">
-                                <button class="btn btn-danger" id="null-postcode-btn" data-bs-toggle="modal" data-bs-target="#null-postcode-modal"></button>
-                            <div id="btn-wrapper">
-                                 <h6>Filter by Toothbrush</h6>
-                                 <button class="btn filter-btn all_toothbrushes" id="toggle_all_toothbrushes">All
-                                     Toothbrushes</button>
-                                 <button class="btn filter-btn toothbrush_2000" id="toggle_toothbrush_2000">Toothbrush
-                                     2000</button>
-                                 <button class="btn filter-btn toothbrush_4000" id="toggle_toothbrush_4000">Toothbrush
-                                     4000</button>
-                            </div>
-                         </div>
-                    </div>
-                    <div class="col-12 col-md-6 d-flex flex-column justify-content-around">
-                            <div>
-                                <h1 id="header"></h1>
-                            </div>
-                            <article id="meta-info-container">
-                                <h1 class="chart-header">Sales Per Age Group</h1>
-                                <div id="sales-chart"></div>
-                            </article>
-                    </div>
+                <div class="col-3">
+                    <p class="banner-header">
+                        Orders Today
+                    </p>
+                    <hr>
+                    <p class="banner-data" id="highest-performing-area"></p>
                 </div>
-             </div>
-        </section>
-        <div class="banner banner-mid pt-5 pb-5">
-            <div class="container-fluid text-center">
-                <div class="row">
-                    <div class="col-4 d-flex justify-content-center bordered">
-                        <div class="icon-container d-flex align-items-center me-5">
-                            <i class="fa-solid fa-circle-check icon"></i>
-                        </div>
-                        <div class="data-container d-flex align-items-center flex-column justify-content-center">
-                            <p class="banner-header">
-                                Successful Deliveries
-                            </p>
-                            <hr>
-                            <p class="banner-data" id="successful-deliveries"></p>
-                        </div>
-                    </div>
-                    <div class="col-4 d-flex justify-content-center bordered">
-                        <div class="icon-container d-flex align-items-center me-5">
-                            <i class="fa-solid fa-circle-xmark icon"></i>
-                        </div>  
-                        <div class="data-container d-flex align-items-center flex-column justify-content-center">
-                            <p class="banner-header">
-                                <span><i class="fa-solid fa-circle-times icon"></i></span>
-                                Unsuccessful Deliveries
-                            </p>
-                            <hr>
-                            <p class="banner-data" id="unsuccessful-deliveries"></p>
-                        </div>
-                    </div>
-                    <div class="col-4 d-flex justify-content-center">
-                        <div class="icon-container d-flex align-items-center me-5">
-                            <i class="fa-solid fa-truck-fast icon"></i>
-                        </div>
-                        <div class="data-container d-flex align-items-center flex-column justify-content-center">
-                             <p class="banner-header">
-                                 Deliveries in Transit
-                             </p>
-                             <hr>
-                             <p class="banner-data" id="deliveries-in-transit"></p>
-                        </div>
-                    </div>
+                <div class="col-3">
+                    <p class="banner-header">Average Customer Age</p>
+                    <hr>
+                    <p class="banner-data" id="avg-cust-age"></p>
+                </div>
+                <div class="col-3">
+                    <p class="banner-header">Average Delivery Time</p>
+                    <hr>
+                    <p class="banner-data" id="avg-delivery-delta"></p>
                 </div>
             </div>
         </div>
+        </div>
+        <section id="tb-overall--meta" class="tb-overall--data pb-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-md-6" id="map-container">
+                        <svg id="sales-map"></svg>
+                        <div id="btn-container">
+                            <button class="btn btn-danger" id="null-postcode-btn" data-bs-toggle="modal"
+                                data-bs-target="#null-postcode-modal"></button>
+                            <div id="btn-wrapper">
+                                <h6>Filter by Toothbrush</h6>
+                                <button class="btn filter-btn all_toothbrushes" id="toggle_all_toothbrushes">All
+                                    Toothbrushes</button>
+                                <button class="btn filter-btn toothbrush_2000" id="toggle_toothbrush_2000">Toothbrush
+                                    2000</button>
+                                <button class="btn filter-btn toothbrush_4000" id="toggle_toothbrush_4000">Toothbrush
+                                    4000</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 d-flex flex-column justify-content-around">
+                        <div>
+                            <h1 id="header"></h1>
+                        </div>
+                        <article id="meta-info-container">
+                            <h1 class="chart-header">Sales Per Age Group</h1>
+                            <div id="sales-chart"></div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+                <div class="banner banner-mid pt-5 pb-5 position-relative">
+                    <div class="container-fluid text-center pt-5 pb-5">
+                        <div id="banner-header-wrapper" class="position-absolute top-0 start-0 ms-2 mt-1">
+                               <h6 id="delivery-breakdown-header">
+                                   Today's Delivery Breakdown</h6>
+                               <hr id="banner-header-hr">
+                        </div>
+                            <div class="row">
+                            <div class="col-4 d-flex justify-content-center bordered">
+                                <div class="icon-container d-flex align-items-center me-5">
+                                    <i class="fa-solid fa-circle-check icon"></i>
+                                </div>
+                                <div
+                                    class="data-container d-flex align-items-center flex-column justify-content-center">
+                                    <p class="banner-header">
+                                        Successful Deliveries
+                                    </p>
+                                    <hr>
+                                    <p class="banner-data" id="successful-deliveries"></p>
+                                </div>
+                            </div>
+                            <div class="col-4 d-flex justify-content-center bordered">
+                                <div class="icon-container d-flex align-items-center me-5">
+                                    <i class="fa-solid fa-circle-xmark icon"></i>
+                                </div>
+                                <div
+                                    class="data-container d-flex align-items-center flex-column justify-content-center">
+                                    <p class="banner-header">
+                                        <span><i class="fa-solid fa-circle-times icon"></i></span>
+                                        Unsuccessful Deliveries
+                                    </p>
+                                    <hr>
+                                    <p class="banner-data" id="unsuccessful-deliveries"></p>
+                                </div>
+                            </div>
+                            <div class="col-4 d-flex justify-content-center">
+                                <div class="icon-container d-flex align-items-center me-5">
+                                    <i class="fa-solid fa-truck-fast icon"></i>
+                                </div>
+                                <div
+                                    class="data-container d-flex align-items-center flex-column justify-content-center">
+                                    <p class="banner-header">
+                                        Deliveries in Transit
+                                    </p>
+                                    <hr>
+                                    <p class="banner-data" id="deliveries-in-transit"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
         <div class="individual-tb-wrapper">
-              <section id="tb-2000--meta">
-                  <div class="container-fluid h-100">
-                      <div class="row h-100">
-                          <div class="col-12 col-md-6 tb-header--container h-100" id="tb-2000-header--container">
-                              <img src="./assets/images/tb-2000.png" alt="Toothbrush 2000" width="532" height="190"
-                                  class="tb-img scroll-target 2000">
-                              <div class="d-flex flex-column align-items-end tb-type-header--wrapper">
-                                  <h2 class="tb-type-header scroll-target 2000">Toothbrush 2000</h2>
-                                  <div class="tb-meta-lead-container scroll-target 2000">
-                                      <p class="meta-lead" id="tb-2000-lead-1"></p>
-                                      <p class="meta-lead" id="tb-2000-lead-2"></p>
-                                  </div>
-                              </div>
-                              <div class="border--1"></div>
-                          </div>
-                          <div class="col-12 col-md-6 tb-strategy--container text-center d-flex align-items-center">
-                              <div class="tb-strategy--wrapper">
-                                  <p class="meta-detail-header">Total Sales: <span class="meta-detail"
-                                          id="tb-2000-sales-result"></span></p>
-                                  <p class="meta-detail-header">Average Customer Age: <span class="meta-detail"
-                                          id="tb-2000-avg-cust-age"></span>
-                                  </p>
-                                  <p class="meta-detail-header">Average Delivery Time: <span class="meta-detail"
-                                          id="tb-2000-avg-delivery-time"></span></p>
-                                  <div id="tb-2000-strategy-wrapper" class="strategy-wrapper">
-                                      <p id="tb-2000-strategy-1"></p>
-                                      <p id="tb-2000-strategy-2"></p>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </section>
-              <section>
-                  <div class="container-fluid barchart-container">
-                      <div class="row">
-                          <div class="col-6">
-                              <h4 class="chart-header">Order Quantity Per Age Group</h4>
-                              <div id="order-quantity-tb2000-age"></div>
-                          </div>
-                          <div class="col-6">
-                              <div class="postcode-performance-container best">
-                                  <h4 class="chart-header">Best Performing Postcodes</h4>
-                                  <table id="postcode-performance-best" class="table">
-                                      <thead>
-                                          <tr>
-                                              <th>Postcode Area</th>
-                                              <th>Order Quantity</th>
-                                          </tr>
-                                      </thead>
-                                      <tbody id="table-data-best">
+            <section id="tb-2000--meta">
+                <div class="container-fluid h-100">
+                    <div class="row h-100">
+                        <div class="col-12 col-md-6 tb-header--container h-100" id="tb-2000-header--container">
+                            <img src="./assets/images/tb-2000.png" alt="Toothbrush 2000" width="532" height="190"
+                                class="tb-img scroll-target 2000">
+                            <div class="d-flex flex-column align-items-end tb-type-header--wrapper">
+                                <h2 class="tb-type-header scroll-target 2000">Toothbrush 2000</h2>
+                                <div class="tb-meta-lead-container scroll-target 2000">
+                                    <p class="meta-lead" id="tb-2000-lead-1"></p>
+                                    <p class="meta-lead" id="tb-2000-lead-2"></p>
+                                </div>
+                            </div>
+                            <div class="border--1"></div>
+                        </div>
+                        <div class="col-12 col-md-6 tb-strategy--container text-center d-flex align-items-center">
+                            <div class="tb-strategy--wrapper">
+                                <p class="meta-detail-header">Total Sales: <span class="meta-detail"
+                                        id="tb-2000-sales-result"></span></p>
+                                <p class="meta-detail-header">Average Customer Age: <span class="meta-detail"
+                                        id="tb-2000-avg-cust-age"></span>
+                                </p>
+                                <p class="meta-detail-header">Average Delivery Time: <span class="meta-detail"
+                                        id="tb-2000-avg-delivery-time"></span></p>
+                                <div id="tb-2000-strategy-wrapper" class="strategy-wrapper">
+                                    <p id="tb-2000-strategy-1"></p>
+                                    <p id="tb-2000-strategy-2"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="container-fluid barchart-container">
+                    <div class="row">
+                        <div class="col-6 d-flex flex-column align-items-center justify-content-center">
+                            <h4 class="chart-header">Order Quantity Per Age Group</h4>
+                            <div id="order-quantity-tb2000-age"></div>
+                        </div>
+                        <div class="col-6">
+                            <div class="postcode-performance-container best">
+                                <h4 class="chart-header">Best Performing Postcodes</h4>
+                                <table id="postcode-performance-best" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Postcode Area</th>
+                                            <th>Order Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-data-best">
 
-                                      </tbody>
-                                  </table>
-                              </div>
-                              <div class="postcode-performance-container best">
-                                  <h4 class="chart-header">Worst Performing Postcodes</h4>
-                                  <table id="postcode-performance-worst" class="table">
-                                      <thead>
-                                          <tr>
-                                              <th>Postcode Area</th>
-                                              <th>Order Quantity</th>
-                                          </tr>
-                                      </thead>
-                                      <tbody id="table-data-worst">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="postcode-performance-container best">
+                                <h4 class="chart-header">Worst Performing Postcodes</h4>
+                                <table id="postcode-performance-worst" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Postcode Area</th>
+                                            <th>Order Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-data-worst">
 
-                                      </tbody>
-                                  </table>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </section>
-              <section id="tb-4000--meta">
-                  <div class="container-fluid h-100">
-                      <div class="row h-100">
-                          <div class="col-12 col-md-6 tb-header--container h-100" id="tb-2000-header--container">
-                              <img src="./assets/images/tb-2000.png" alt="Toothbrush 2000" width="532" height="190"
-                                  class="tb-img scroll-target 4000">
-                              <div class="d-flex flex-column align-items-end tb-type-header--wrapper">
-                                  <h2 class="tb-type-header scroll-target 4000">Toothbrush 4000</h2>
-                                  <div class="tb-meta-lead-container scroll-target 4000">
-                                      <p class="meta-lead" id="tb-4000-lead-1"></p>
-                                      <p class="meta-lead" id="tb-4000-lead-2"></p>
-                                  </div>
-                              </div>
-                              <div class="border--1"></div>
-                          </div>
-                          <div class="col-12 col-md-6 tb-strategy--container text-center d-flex align-items-center">
-                              <div class="tb-strategy--wrapper">
-                                  <p class="meta-detail-header">Total Sales: <span class="meta-detail"
-                                          id="tb-4000-sales-result"></span></p>
-                                  <p class="meta-detail-header">Average Customer Age: <span class="meta-detail"
-                                          id="tb-4000-avg-cust-age"></span></p>
-                                  <p class="meta-detail-header">Average Delivery Time: <span class="meta-detail"
-                                          id="tb-4000-avg-delivery-time"></span></p>
-                                  <div id="tb-4000-strategy-wrapper" class="strategy-wrapper">
-                                      <p id="tb-4000-strategy-1"></p>
-                                      <p id="tb-4000-strategy-2"></p>
-                                  </div>
-                              </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="tb-4000--meta">
+                <div class="container-fluid h-100">
+                    <div class="row h-100">
+                        <div class="col-12 col-md-6 tb-header--container h-100" id="tb-2000-header--container">
+                            <img src="./assets/images/tb-2000.png" alt="Toothbrush 2000" width="532" height="190"
+                                class="tb-img scroll-target 4000">
+                            <div class="d-flex flex-column align-items-end tb-type-header--wrapper">
+                                <h2 class="tb-type-header scroll-target 4000">Toothbrush 4000</h2>
+                                <div class="tb-meta-lead-container scroll-target 4000">
+                                    <p class="meta-lead" id="tb-4000-lead-1"></p>
+                                    <p class="meta-lead" id="tb-4000-lead-2"></p>
+                                </div>
+                            </div>
+                            <div class="border--1"></div>
+                        </div>
+                        <div class="col-12 col-md-6 tb-strategy--container text-center d-flex align-items-center">
+                            <div class="tb-strategy--wrapper">
+                                <p class="meta-detail-header">Total Sales: <span class="meta-detail"
+                                        id="tb-4000-sales-result"></span></p>
+                                <p class="meta-detail-header">Average Customer Age: <span class="meta-detail"
+                                        id="tb-4000-avg-cust-age"></span></p>
+                                <p class="meta-detail-header">Average Delivery Time: <span class="meta-detail"
+                                        id="tb-4000-avg-delivery-time"></span></p>
+                                <div id="tb-4000-strategy-wrapper" class="strategy-wrapper">
+                                    <p id="tb-4000-strategy-1"></p>
+                                    <p id="tb-4000-strategy-2"></p>
+                                </div>
+                            </div>
 
-                          </div>
-                      </div>
-                  </div>
-              </section>
-              <section>
-                  <div class="container-fluid barchart-container">
-                      <div class="row">
-                          <div class="col-6">
-                              <h4 class="chart-header">Order Quantity Per Age Group</h4>
-                              <div id="order-quantity-tb4000-age"></div>
-                          </div>
-                          <div class="col-6">
-                              <div class="postcode-performance-container best">
-                                  <h4 class="chart-header">Best Performing Postcodes</h4>
-                                  <table id="postcode-performance-best" class="table">
-                                      <thead>
-                                          <tr>
-                                              <th>Postcode Area</th>
-                                              <th>Order Quantity</th>
-                                          </tr>
-                                      </thead>
-                                      <tbody id="table-data-tb4000-best">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="container-fluid barchart-container">
+                    <div class="row">
+                        <div class="col-6 d-flex flex-column align-items-center justify-content-center">
+                            <h4 class="chart-header">Order Quantity Per Age Group</h4>
+                            <div id="order-quantity-tb4000-age"></div>
+                        </div>
+                        <div class="col-6">
+                            <div class="postcode-performance-container best">
+                                <h4 class="chart-header">Best Performing Postcodes</h4>
+                                <table id="postcode-performance-best" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Postcode Area</th>
+                                            <th>Order Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-data-tb4000-best">
 
-                                      </tbody>
-                                  </table>
-                              </div>
-                              <div class="postcode-performance-container best">
-                                  <h4 class="chart-header">Worst Performing Postcodes</h4>
-                                  <table id="postcode-performance-worst" class="table">
-                                      <thead>
-                                          <tr>
-                                              <th>Postcode Area</th>
-                                              <th>Order Quantity</th>
-                                          </tr>
-                                      </thead>
-                                      <tbody id="table-data-tb4000-worst">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="postcode-performance-container best">
+                                <h4 class="chart-header">Worst Performing Postcodes</h4>
+                                <table id="postcode-performance-worst" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Postcode Area</th>
+                                            <th>Order Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-data-tb4000-worst">
 
-                                      </tbody>
-                                  </table>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </section>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
     <aside>
         <div class="modal fade" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1"
             id="null-postcode-modal">
-             <div class="modal-dialog modal-dialog-centered">
-                 <div class="modal-dialog">
-                     <div class="modal-content">
-                         <div class="modal-header">
-                             <h5 class="modal-title" id="null-postcode-header"></h5>
-                             <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                 aria-label="Close"></button>
-                         </div>
-                         <div class="modal-body null-postcode-list-container">
-                             <ul id="null-postcode-list">
-                                
-                             </ul>
-                         </div>
-                         <div class="modal-footer">
-                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                         </div>
-                     </div>
-                 </div>
-             </div>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="null-postcode-header"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body null-postcode-list-container">
+                            <ul id="null-postcode-list">
+
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </aside>
     <script src="./assets/js/get_data.js"></script>
     <script src="./assets/data/result_prompts.js"></script>
     <script src="./assets/js/main.js">
-      
+
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
         integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
@@ -324,5 +334,4 @@
     </script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
-
 </html>
