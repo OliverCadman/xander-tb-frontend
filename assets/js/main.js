@@ -654,10 +654,8 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       ordersToday = await getData(
-        "/todays_orders/get_todays_orders?toothbrush_type=toothbrush_2000"
+        "/todays_orders/get_todays_order_data?toothbrush_type=toothbrush_2000"
       )
-
-
 
       header = "Toothbrush 2000";
       toothbrushType = "toothbrush_2000";
@@ -667,7 +665,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       ordersToday = await getData(
-        "/todays_orders/get_todays_orders?toothbrush_type=toothbrush_4000"
+        "/todays_orders/get_todays_order_data?toothbrush_type=toothbrush_4000"
       );
 
       header = "Toothbrush 4000";
@@ -675,12 +673,13 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       fullData = await getData("/full_orders/get_full_data");
 
-      ordersToday = await getData("/todays_orders/get_todays_orders")
+      ordersToday = await getData("/todays_orders/get_todays_order_data")
 
       header = "All Toothbrushes";
       toothbrushType = "all_toothbrushes";
     }
 
+    console.log(ordersToday)
     
     displayMetaData(
       fullData.total_orders,
