@@ -6,6 +6,7 @@
   --darkerblue : #26408B;
   --midnightblue : #0F084B;
   --xiketic: #0D0221;
+  --warning: #d18512;
 
   --font-primary: 'Jost', sans-serif;
 }
@@ -95,7 +96,7 @@ hr {
   font-weight: 300;
 }
 
-.icon-container, .data-container {
+.icon-container {
   display: inline-block;
 }
 
@@ -141,6 +142,10 @@ hr {
   stroke: #fff;
   stroke-width: .5px;
   stroke-linejoin: round;
+}
+
+.custom-warning {
+  background-color: var(--warning);
 }
 
 .tooltip, .tooltip-bar{
@@ -379,7 +384,6 @@ hr {
 }
 
 @media screen and (min-width: 1920px) {
-<<<<<<< HEAD
   #tb-overall--meta {
     height: 50vh;
   }
@@ -387,10 +391,10 @@ hr {
   .tb-wrapper {
     height: 35vh;
   }
-=======
+
   #tb-2000--meta,
   #tb-4000--meta {
     height: 50vh;
   }
->>>>>>> 76380afeaad51b9c7c9f2bb3ff1abbf3f1ac2d93
+
 }

@@ -784,6 +784,24 @@ document.addEventListener("DOMContentLoaded", () => {
     $('#unsuccessful-deliveries').text(ordersToday.delivery_statuses.delivery_unsuccessful);
     $('#deliveries-in-transit').text(ordersToday.delivery_statuses.delivery_in_transit);
 
+
+    ordersToday.delivery_statuses.delivery_successful > 0 ? $('#successful-delivery-container').addClass('bg-success') 
+    : $('#successful-delivery-container').addClass('bg-danger');
+
+    ordersToday.delivery_statuses.delivery_unsuccessful > 0 ? $('#unsuccessful-delivery-container').addClass('bg-danger')
+    : $('#unsuccessful-delivery-container').addClass('bg-success');
+
+    ordersToday.delivery_statuses.delivery_unsuccessful > 0
+      ? $("#unsuccessful-delivery-icon").addClass(
+          "fa-solid fa-circle-times icon"
+        )
+      : $("#unsuccessful-delivery-icon").addClass(
+          "fa-solid fa-circle-check icon"
+        );
+
+    ordersToday.delivery_statuses.delivery_in_transit > 0 ? $('#in-transit-container').addClass('custom-warning')
+    : $('#in-transit-container').addClass('bg-success')
+
     toggleLoadSpinner(false);
   };
 
