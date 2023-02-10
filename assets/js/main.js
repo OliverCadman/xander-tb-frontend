@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let width = window.innerWidth / 2;
   let height;
-  
+
   // JavaScript's equivalent of a media query
   if (window.screen.width < 1920) {
     height = window.innerHeight;
@@ -36,9 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
     width = window.innerWidth / 2;
     height = window.innerHeight / 2 + 100;
   }
-  
-  
-  console.log(width, height)
+
+  console.log(width, height);
 
   var projection = d3
     .geoAlbers()
@@ -53,8 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Bar Chart - Global Variables
   // set the dimensions and margins of the graph
   var margin = { top: 30, right: 30, bottom: 70, left: 60 };
-    width = 600 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+  (width = 600 - margin.left - margin.right),
+    (height = 400 - margin.top - margin.bottom);
 
   // append the svg object to the body of the page
   var svgBarChart = d3
@@ -163,12 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
         $("#null-postcode-header").text(`${nullPostcodes.length} UK Districts`);
         $("#null-postcode-list").html(nullPostcodeHTML);
       }
-
-      svg
-        .append("div")
-        .attr("x", 45)
-        .attr("y", window.innerHeight / 2)
-        .html(`<p>hello</p>`);
 
       svg
         .append("path")
@@ -301,11 +294,12 @@ document.addEventListener("DOMContentLoaded", () => {
     customerAge,
     ordersToday
   ) => {
-    
-    $('#total-orders').text(totalOrders.total_orders);
-    $('#avg-cust-age').text(customerAge.avg_customer_age);
-    $('#avg-delivery-delta').text(formatDelta(avgDeliveryDelta.avg_delivery_delta));
-    $('#highest-performing-area').text(ordersToday.count);
+    $("#total-orders").text(totalOrders.total_orders);
+    $("#avg-cust-age").text(customerAge.avg_customer_age);
+    $("#avg-delivery-delta").text(
+      formatDelta(avgDeliveryDelta.avg_delivery_delta)
+    );
+    $("#highest-performing-area").text(ordersToday.count);
   };
 
   const displayTBData = (tb2000Data, tb4000Data) => {
@@ -582,8 +576,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function onMouseOverBar(d, i, m) {
-      let scrollTop = $(window).scrollTop();
-
       let el = $(elID);
       let elOffset = el.offset().top;
 
@@ -637,7 +629,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Display Meta data in top banner
 
-
   /**
    * Click event on filter buttons
    * to filter dataset by toothbrush type.
@@ -655,7 +646,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       ordersToday = await getData(
         "/todays_orders/get_todays_order_data?toothbrush_type=toothbrush_2000"
-      )
+      );
 
       header = "Toothbrush 2000";
       toothbrushType = "toothbrush_2000";
@@ -673,14 +664,12 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       fullData = await getData("/full_orders/get_full_data");
 
-      ordersToday = await getData("/todays_orders/get_todays_order_data")
+      ordersToday = await getData("/todays_orders/get_todays_order_data");
 
       header = "All Toothbrushes";
       toothbrushType = "all_toothbrushes";
     }
 
-    console.log(ordersToday)
-    
     displayMetaData(
       fullData.total_orders,
       fullData.avg_delivery_delta,
@@ -705,7 +694,7 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleLoadSpinner(true);
 
     const fullData = await getData("/full_orders/get_full_data");
-    console.log(fullData)
+    console.log(fullData);
     const tb2000FullData = await getData(
       "/full_orders/get_full_data_by_tb_type?toothbrush_type=toothbrush_2000"
     );
@@ -713,18 +702,14 @@ document.addEventListener("DOMContentLoaded", () => {
       "/full_orders/get_full_data_by_tb_type?toothbrush_type=toothbrush_4000"
     );
 
-    const ordersToday = await getData(
-      "/todays_orders/get_todays_order_data"
-    )
-
-
+    const ordersToday = await getData("/todays_orders/get_todays_order_data");
 
     displayMetaData(
       fullData.total_orders,
       fullData.avg_delivery_delta,
       fullData.customer_age,
       ordersToday
-    )
+    );
 
     displayMap(fullData.data_by_postcode);
 
@@ -779,16 +764,23 @@ document.addEventListener("DOMContentLoaded", () => {
     let header = "All Toothbrushes";
     displayHeader(header);
 
-    $('#successful-deliveries').text(ordersToday.delivery_statuses.delivery_successful);
-    $('#unsuccessful-deliveries').text(ordersToday.delivery_statuses.delivery_unsuccessful);
-    $('#deliveries-in-transit').text(ordersToday.delivery_statuses.delivery_in_transit);
+    $("#successful-deliveries").text(
+      ordersToday.delivery_statuses.delivery_successful
+    );
+    $("#unsuccessful-deliveries").text(
+      ordersToday.delivery_statuses.delivery_unsuccessful
+    );
+    $("#deliveries-in-transit").text(
+      ordersToday.delivery_statuses.delivery_in_transit
+    );
 
+    ordersToday.delivery_statuses.delivery_successful > 0
+      ? $("#successful-delivery-container").addClass("bg-success")
+      : $("#successful-delivery-container").addClass("bg-danger");
 
-    ordersToday.delivery_statuses.delivery_successful > 0 ? $('#successful-delivery-container').addClass('bg-success') 
-    : $('#successful-delivery-container').addClass('bg-danger');
-
-    ordersToday.delivery_statuses.delivery_unsuccessful > 0 ? $('#unsuccessful-delivery-container').addClass('bg-danger')
-    : $('#unsuccessful-delivery-container').addClass('bg-success');
+    ordersToday.delivery_statuses.delivery_unsuccessful > 0
+      ? $("#unsuccessful-delivery-container").addClass("bg-danger")
+      : $("#unsuccessful-delivery-container").addClass("bg-success");
 
     ordersToday.delivery_statuses.delivery_unsuccessful > 0
       ? $("#unsuccessful-delivery-icon").addClass(
@@ -798,8 +790,9 @@ document.addEventListener("DOMContentLoaded", () => {
           "fa-solid fa-circle-check icon"
         );
 
-    ordersToday.delivery_statuses.delivery_in_transit > 0 ? $('#in-transit-container').addClass('custom-warning')
-    : $('#in-transit-container').addClass('bg-success')
+    ordersToday.delivery_statuses.delivery_in_transit > 0
+      ? $("#in-transit-container").addClass("custom-warning")
+      : $("#in-transit-container").addClass("bg-success");
 
     toggleLoadSpinner(false);
   };
@@ -816,7 +809,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const targetEl4000 = document.getElementById("tb-4000--meta");
     const targetTop4000 = targetEl4000.getBoundingClientRect().top;
 
-    const banner = document.getElementById('banner-top');
+    const banner = document.getElementById("banner-top");
     const bannerHeight = banner.getBoundingClientRect().height;
 
     scrollTargets.forEach((target) => {
@@ -834,9 +827,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (window.scrollY > bannerHeight) {
-      banner.classList.add('hide');
+      banner.classList.add("hide");
     } else {
-      banner.classList.remove('hide');
+      banner.classList.remove("hide");
     }
   }
 });
@@ -851,7 +844,7 @@ const convertPostCodeAreaToPostcode = (data) => {
       }
     }
   }
- return data;
+  return data;
 };
 
 const convertSalesByAgeObj = (data) => {
@@ -900,12 +893,11 @@ const convertData = (data, property1, property2) => {
 
 // Show loading spinner while data is loading.
 const toggleLoadSpinner = (loading) => {
-   if (loading) {
-     $(".loading").addClass("show-loading");
-     $(".tb-main").addClass("hide-main");
-   } else {
-     $(".loading").removeClass("show-loading");
-     $(".tb-main").removeClass("hide-main");
-   }
-}
-
+  if (loading) {
+    $(".loading").addClass("show-loading");
+    $(".tb-main").addClass("hide-main");
+  } else {
+    $(".loading").removeClass("show-loading");
+    $(".tb-main").removeClass("hide-main");
+  }
+};
